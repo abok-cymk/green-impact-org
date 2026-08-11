@@ -12,10 +12,11 @@ interface AppImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   className?: string
   transformation?: string
   fallbackSrc?: string
+  priority?: boolean
 }
 
 const IMAGEKIT_URL_BASE = `https://ik.imagekit.io/${IMAGE_KIT_ID}`
-const DEFAULT_FALLBACK = "https://unsplash.com"
+const DEFAULT_FALLBACK = "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=800&q=80"
 
 export function AppImage({
   src,
@@ -26,22 +27,24 @@ export function AppImage({
   transformation,
   fallbackSrc = DEFAULT_FALLBACK,
   style,
+  priority = false,
   ...props
 }: AppImageProps) {
   const [status, setStatus] = useState<"loading" | "loaded" | "error">(
-    "loading"
+    priority ? "loaded" : "loading"
   )
 
-  const localizedSrc = src.startsWith("/") ? src : `/${src}`
+  const getImgSrc = (source: string) => {
+    if (source.startsWith("http")) return source
+    const localizedSrc = source.startsWith("/") ? source : `/${source}`
+    const defaultTransform = width
+      ? `w-${width},q-80,f-auto`
+      : "w-800,q-80,f-auto"
+    const activeTransform = transformation || defaultTransform
+    return `${IMAGEKIT_URL_BASE}${localizedSrc}?tr=${activeTransform}`
+  }
 
-  const defaultTransform = width
-    ? `w-${width},q-80,f-auto`
-    : "w-800,q-80,f-auto"
-  const activeTransform = transformation || defaultTransform
-
-  const finalSrc = src.startsWith("http")
-    ? src
-    : `${IMAGEKIT_URL_BASE}${localizedSrc}?tr=${activeTransform}`
+  const [imgSrc, setImgSrc] = useState<string>(() => getImgSrc(src))
 
   return (
     <div
@@ -52,7 +55,7 @@ export function AppImage({
         ...style,
       }}
     >
-      {status === "loading" && (
+      {!priority && status === "loading" && (
         <Skeleton
           className={cn(
             "absolute inset-0 z-10 h-full w-full rounded-lg",
@@ -61,7 +64,7 @@ export function AppImage({
         />
       )}
 
-      {status === "error" ? (
+      {status === "error" && imgSrc === fallbackSrc ? (
         <div
           className={cn(
             "flex h-full min-h-37.5 w-full flex-col items-center justify-center gap-2 rounded-lg border bg-muted text-muted-foreground",
@@ -73,16 +76,28 @@ export function AppImage({
         </div>
       ) : (
         <img
+          loading={priority ? "eager" : "lazy"}
+          decoding={priority ? "sync" : "async"}
+          fetchPriority={priority ? "high" : "auto"}
           {...props}
-          src={finalSrc} 
+          src={imgSrc}
           alt={alt}
           width={width}
           height={height}
-          onLoad={() => setStatus("loaded")}
-          onError={() => setStatus("error")}
+          onLoad={() => !priority && setStatus("loaded")}
+          onError={() => {
+            if (imgSrc !== fallbackSrc) {
+              setImgSrc(fallbackSrc)
+              setStatus("loading")
+            } else {
+              setStatus("error")
+            }
+          }}
           className={cn(
-            "rounded-lg object-cover transition-all duration-300 hover:scale-[1.02]",
-            status === "loading" ? "opacity-0" : "opacity-100",
+            "rounded-lg object-cover",
+            !priority && "transition-all duration-300 hover:scale-[1.02]",
+            !priority && (status === "loading" ? "opacity-0" : "opacity-100"),
+            priority && "opacity-100",
             className
           )}
         />

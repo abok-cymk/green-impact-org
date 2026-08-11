@@ -5,9 +5,11 @@ import { cn } from '@/lib/utils';
 import { AppImage } from '../ui/AppImage';
 
 const navLinks = [
-  { name: 'Mission', href: '#mission' },
+  { name: 'Mission & Vision', href: '#mission-vision'},
+  { name: 'Problem', href: '#problem' },
   { name: 'Solution', href: '#solution' },
   { name: 'Impact', href: '#impact' },
+  { name: 'Community', href: '#community'},
   { name: 'Awards', href: '#awards' },
 ];
 
@@ -47,7 +49,7 @@ export function Navbar() {
         </a>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden sm:flex items-center gap-8">
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -67,7 +69,7 @@ export function Navbar() {
 
         {/* Mobile Toggle */}
         <button
-          className="md:hidden p-2 text-slate-900"
+          className="sm:hidden p-2 text-slate-900"
           onClick={() => setIsMobileOpen(!isMobileOpen)}
           aria-label="Toggle menu"
         >
@@ -82,7 +84,7 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-b border-slate-200 overflow-hidden"
+            className="sm:hidden bg-white border-b border-slate-200 overflow-hidden"
           >
             <div className="px-6 py-4 flex flex-col gap-4">
               {navLinks.map((link) => (

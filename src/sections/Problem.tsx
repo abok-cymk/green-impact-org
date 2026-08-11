@@ -5,7 +5,7 @@ import { AlertTriangle } from 'lucide-react';
 
 export function Problem() {
   return (
-    <Section id="mission" dark className="bg-slate-900">
+    <Section id="problem" dark className="bg-slate-900">
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
