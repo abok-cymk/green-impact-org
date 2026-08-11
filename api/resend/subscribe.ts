@@ -3,7 +3,7 @@ import { render } from "@react-email/render"
 import { z } from "zod"
 import { Ratelimit } from "@upstash/ratelimit"
 import { Redis } from "@upstash/redis"
-import WelcomeEmail from "@/emails/WelcomeEmail"
+import WelcomeEmail from "../../src/emails/WelcomeEmail"
 
 const apiKey = process.env.RESEND_API_KEY
 const segmentAudienceId = process.env.RESEND_SEGMENT_AUDIENCE_ID
