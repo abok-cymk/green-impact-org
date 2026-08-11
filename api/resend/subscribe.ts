@@ -1,3 +1,4 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from "resend"
 import { render } from "@react-email/render"
 import { z } from "zod"
@@ -33,13 +34,6 @@ const SubscribeSchema = z.object({
     .transform((value) => value.toLowerCase()),
 })
 
-function jsonResponse(body: Record<string, unknown>, status: number) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { "Content-Type": "application/json" },
-  })
-}
-
 function buildContactPayload(email: string) {
   return {
     email,
@@ -48,54 +42,44 @@ function buildContactPayload(email: string) {
   }
 }
 
-function getClientIp(request: Request) {
-  const forwardedFor = request.headers.get("x-forwarded-for")
+function getClientIp(req: VercelRequest) {
+  const forwardedFor = req.headers["x-forwarded-for"]
   if (forwardedFor) {
-    return forwardedFor.split(",")[0]?.trim() || "unknown"
+    return Array.isArray(forwardedFor) ? forwardedFor[0] : forwardedFor.split(",")[0]?.trim() || "unknown"
   }
-
-  return request.headers.get("x-real-ip")?.trim() || "unknown"
+  return (req.headers["x-real-ip"] as string)?.trim() || "unknown"
 }
 
-export async function POST(request: Request) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Only accept POST requests
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
   if (!apiKey) {
-    return jsonResponse({ error: "Missing RESEND_API_KEY" }, 500)
+    return res.status(500).json({ error: "Missing RESEND_API_KEY" })
   }
 
   if (!rateLimiter) {
-    return jsonResponse(
-      { error: "Missing Upstash rate limit configuration" },
-      500
-    )
+    return res.status(500).json({ error: "Missing Upstash rate limit configuration" })
   }
 
-  let body: unknown
-
-  try {
-    body = await request.json()
-  } catch {
-    return jsonResponse({ error: "Invalid request body" }, 400)
-  }
-
-  const parsedBody = SubscribeSchema.safeParse(body)
+  const parsedBody = SubscribeSchema.safeParse(req.body)
 
   if (!parsedBody.success) {
-    return jsonResponse({ error: "Invalid email address" }, 400)
+    return res.status(400).json({ error: "Invalid email address" })
   }
 
   const { email } = parsedBody.data
-  const clientIp = getClientIp(request)
+  const clientIp = getClientIp(req)
 
   try {
     const rateLimitResult = await rateLimiter.limit(clientIp)
 
     if (!rateLimitResult.success) {
-      return jsonResponse(
-        {
-          error: "Too many subscription attempts. Please try again later.",
-        },
-        429
-      )
+      return res.status(429).json({
+        error: "Too many subscription attempts. Please try again later.",
+      })
     }
 
     const existingContactResult = await resend.contacts.get({ email })
@@ -113,7 +97,7 @@ export async function POST(request: Request) {
 
     if (existingContactResult?.data) {
       if (existingContactResult.data.unsubscribed === false) {
-        return jsonResponse({ success: false, alreadySubscribed: true }, 200)
+        return res.status(200).json({ success: false, alreadySubscribed: true })
       }
 
       await resend.contacts.update(buildContactPayload(email))
@@ -143,18 +127,15 @@ export async function POST(request: Request) {
       bcc: "greenimpactinnovators@gmail.com",
       subject: "Welcome to Green Impact Innovators! 🎉",
       html: emailHtml,
-      // RFC 8058 header for one-click email client unsubscribe (Gmail/Apple Mail)
       headers: {
         "List-Unsubscribe": "<{{{RESEND_UNSUBSCRIBE_URL}}}>",
       },
     })
 
-    return jsonResponse({ success: true }, 200)
+    return res.status(200).json({ success: true })
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
-
     console.error("Subscribe error:", error)
-
-    return jsonResponse({ error: message }, 500)
+    return res.status(500).json({ error: message })
   }
 }
