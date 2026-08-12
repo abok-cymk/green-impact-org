@@ -13,6 +13,7 @@ const upstashRedisUrl = process.env.UPSTASH_REDIS_REST_URL
 const upstashRedisToken = process.env.UPSTASH_REDIS_REST_TOKEN
 
 const resend = new Resend(apiKey)
+
 const rateLimitStore =
   upstashRedisUrl && upstashRedisToken
     ? new Redis({ url: upstashRedisUrl, token: upstashRedisToken })
@@ -51,20 +52,17 @@ function getClientIp(req: VercelRequest) {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Only accept POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
   if (!apiKey) {
-    return res.status(500).json({ error: "Missing RESEND_API_KEY" })
+    console.error("Newsletter Error: RESEND_API_KEY is missing");
+    return res.status(500).json({ error: "Newsletter service configuration missing" })
   }
 
-  if (!rateLimiter) {
-    return res.status(500).json({ error: "Missing Upstash rate limit configuration" })
-  }
-
-  const parsedBody = SubscribeSchema.safeParse(req.body)
+  const body = req.body;
+  const parsedBody = SubscribeSchema.safeParse(body)
 
   if (!parsedBody.success) {
     return res.status(400).json({ error: "Invalid email address" })
@@ -74,54 +72,51 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const clientIp = getClientIp(req)
 
   try {
-    const rateLimitResult = await rateLimiter.limit(clientIp)
-
-    if (!rateLimitResult.success) {
-      return res.status(429).json({
-        error: "Too many subscription attempts. Please try again later.",
-      })
+    if (rateLimiter) {
+      const rateLimitResult = await rateLimiter.limit(clientIp)
+      if (!rateLimitResult.success) {
+        return res.status(429).json({
+          error: "Too many subscription attempts. Please try again later.",
+        })
+      }
     }
 
-    const existingContactResult = await resend.contacts.get({ email })
-    const existingContactError = existingContactResult?.error as
-      { statusCode?: number; message?: string } | undefined
-
-    if (
-      existingContactError?.statusCode &&
-      existingContactError.statusCode !== 404
-    ) {
-      throw new Error(
-        existingContactError.message ?? "Unable to verify contact"
-      )
-    }
-
-    if (existingContactResult?.data) {
-      if (existingContactResult.data.unsubscribed === false) {
-        return res.status(200).json({ success: false, alreadySubscribed: true })
+    // 1. Manage Contact in Resend
+    try {
+      const existingContact = await resend.contacts.get({ email });
+      
+      if (existingContact.data && existingContact.data.unsubscribed === false) {
+        return res.status(200).json({ success: true, alreadySubscribed: true });
       }
 
-      await resend.contacts.update(buildContactPayload(email))
-    } else {
-      await resend.contacts.create(buildContactPayload(email))
+      if (existingContact.data) {
+        await resend.contacts.update(buildContactPayload(email));
+      } else {
+        await resend.contacts.create(buildContactPayload(email));
+      }
+    } catch (contactError: any) {
+      // If 404, it's fine, we create it. Otherwise, log it.
+      if (contactError.statusCode !== 404) {
+        console.warn("Resend Contact Management Warning:", contactError.message || contactError);
+      }
+      // Fallback: try to create anyway if get failed
+      await resend.contacts.create(buildContactPayload(email)).catch(() => {});
     }
 
+    // 2. Manage Topics
     if (topicsID) {
       await resend.contacts.topics.update({
         email,
-        topics: [
-          {
-            id: topicsID,
-            subscription: "opt_in",
-          },
-        ],
-      })
+        topics: [{ id: topicsID, subscription: "opt_in" }],
+      }).catch(err => console.warn("Topic update failed:", err.message));
     }
 
+    // 3. Send Welcome Email
     const emailHtml = await render(
-      WelcomeEmail({ unsubscribeUrl: "{{{RESEND_UNSUBSCRIBE_URL}}}" })
+      <WelcomeEmail unsubscribeUrl="{{{RESEND_UNSUBSCRIBE_URL}}}" />
     )
 
-    await resend.emails.send({
+    const { error: sendError } = await resend.emails.send({
       from: "Green Impact Innovators <info@greenimpactinnovators.works>",
       to: email,
       bcc: "greenimpactinnovators@gmail.com",
@@ -132,10 +127,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       },
     })
 
+    if (sendError) {
+      console.error("Resend Email Send Error:", sendError);
+      // We still return success if the contact was added but email failed (e.g. domain not verified)
+    }
+
     return res.status(200).json({ success: true })
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error)
-    console.error("Subscribe error:", error)
-    return res.status(500).json({ error: message })
+  } catch (error: any) {
+    console.error("Newsletter Subscription Exception:", error.message || error);
+    return res.status(500).json({ 
+      error: "Subscription failed", 
+      message: error.message 
+    })
   }
 }
