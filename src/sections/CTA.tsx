@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 import { Section } from "@/components/layout/Section"
-import { ContactForm } from "@/components/ui/ContactForm"
+import ContactForm from "@/components/ui/ContactForm"
 import { DonationModule } from "@/components/ui/DonationModule"
 
 export function CTA() {
