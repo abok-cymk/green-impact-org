@@ -16,5 +16,5 @@
       "@/*": ["../src/*"]
     }
   },
-  "include": ["pesapal/**/*.ts", "resend/**/*.ts"]
+  "include": ["pesapal/**/*.ts", "resend/**/*.ts", "resend/subscribe.tsx"]
 }
