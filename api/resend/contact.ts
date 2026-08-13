@@ -15,14 +15,13 @@ const contactSchema = z.object({
 })
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // 1. Method Check
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method Not Allowed" })
+    return res.status(405).json({ error: "Method not allowed" })
   }
 
   try {
-    // 2. Validation
     const parsedBody = contactSchema.safeParse(req.body)
+
     if (!parsedBody.success) {
       return res.status(400).json({
         error: "Validation failed",
@@ -32,7 +31,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const { name, email, message } = parsedBody.data
 
-    // 3. Send Email via Resend
     const { data, error } = await resend.emails.send({
       from: "Green Impact Innovators <info@greenimpactinnovators.works>",
       to: "greenimpactinnovators@gmail.com",
