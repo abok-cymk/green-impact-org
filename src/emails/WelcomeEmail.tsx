@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react"
 import {
   Html,
   Head,
@@ -208,8 +209,8 @@ export const WelcomeEmail = ({
   )
 }
 
-// Explicit styles optimized for strict inline email engine output mapping
-const styles = {
+// Explicitly typing the styles object fixes all TS2353 and TS2559 errors
+const styles: Record<string, CSSProperties> = {
   body: {
     backgroundColor: "#f4f7f4",
     margin: "0 auto",
@@ -231,8 +232,8 @@ const styles = {
     fontSize: "12px",
     fontWeight: 700,
     letterSpacing: "1.5px",
-    textAlign: "center" as const,
-    textTransform: "uppercase" as const,
+    textAlign: "center",
+    textTransform: "uppercase",
     margin: "0 0 12px 0",
   },
   mainHeading: {
@@ -240,14 +241,14 @@ const styles = {
     fontSize: "30px",
     fontWeight: 700,
     letterSpacing: "-0.5px",
-    textAlign: "center" as const,
+    textAlign: "center",
     lineHeight: "1.25",
     margin: "0 0 16px 0",
   },
   subtextCenter: {
     color: "#4b5563",
     fontSize: "16px",
-    textAlign: "center" as const,
+    textAlign: "center",
     lineHeight: "1.6",
     margin: "0 0 28px 0",
   },
@@ -266,7 +267,7 @@ const styles = {
     padding: "14px 28px",
     textDecoration: "none",
     display: "inline-block",
-    textAlign: "center" as const,
+    textAlign: "center",
     boxShadow: "0 2px 4px rgba(47, 125, 58, 0.2)",
   },
   sectionPadding: {
