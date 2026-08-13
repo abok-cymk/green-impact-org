@@ -1,4 +1,4 @@
-{
+﻿{
   "compilerOptions": {
     "target": "es2020",
     "module": "commonjs",
@@ -16,5 +16,10 @@
       "@/*": ["../src/*"]
     }
   },
-  "include": ["pesapal/**/*.ts", "resend/**/*.ts", "resend/subscribe.tsx"]
+  "include": [
+    "pesapal/**/*.ts",
+    "resend/**/*.ts",
+    "resend/subscribe.tsx",
+    "resend/contact.ts"
+  ]
 }
