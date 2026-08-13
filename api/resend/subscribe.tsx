@@ -5,7 +5,7 @@ import { render } from "@react-email/render"
 import { z } from "zod"
 import { Ratelimit } from "@upstash/ratelimit"
 import { Redis } from "@upstash/redis"
-import WelcomeEmail from "../emails/WelcomeEmail.js"
+import WelcomeEmail from "../emails/WelcomeEmail"
 
 import {
   RESEND_API_KEY,
