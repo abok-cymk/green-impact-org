@@ -4,5 +4,5 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "rewrites": [{ "source": "/api/(.*)", "destination": "/api/$1" }],
-  "functions": { "api/**/*.{ts,tsx}": { "maxDuration": 15,  "includeFiles": "api/**,src/emails/**" } }
+  "functions": { "api/**/*.{ts,tsx}": { "maxDuration": 15,  "includeFiles": "api/**" } }
 }
