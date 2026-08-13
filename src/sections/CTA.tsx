@@ -2,7 +2,6 @@ import { motion } from "framer-motion"
 import { Section } from "@/components/layout/Section"
 import ContactForm from "@/components/ui/ContactForm"
 import { DonationModule } from "@/components/ui/DonationModule"
-import { FORMSPREE_ID_HASH } from "@/infrastructure/formspree"
 
 export function CTA() {
   return (
@@ -24,7 +23,7 @@ export function CTA() {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          <ContactForm formId={FORMSPREE_ID_HASH} />
+          <ContactForm />
         </motion.div>
       </div>
     </Section>
