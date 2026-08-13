@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react"
+// import React, { useRef, useState } from "react"
 import { useForm, ValidationError } from "@formspree/react"
 import { Heart, CheckCircle2 } from "lucide-react"
-import ReCAPTCHA from "react-google-recaptcha"
+// import ReCAPTCHA from "react-google-recaptcha"
 
 interface ContactFormProps {
   formId: string
@@ -9,34 +9,34 @@ interface ContactFormProps {
 
 export default function ContactForm({ formId }: ContactFormProps) {
   const [state, handleSubmit] = useForm(formId)
-  const recaptchaRef = useRef<ReCAPTCHA>(null)
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
+  // const recaptchaRef = useRef<ReCAPTCHA>(null)
+  // const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
 
-  const googleSiteKey = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY
+  // const googleSiteKey = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY
 
-  const onCaptchaChange = (token: string | null) => {
-    setRecaptchaToken(token)
-  }
+  // const onCaptchaChange = (token: string | null) => {
+  //   setRecaptchaToken(token)
+  // }
 
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault()
 
-    if (!recaptchaToken) {
-      alert("Please check the 'I am not a robot' reCAPTCHA box.")
-      return
-    }
+    // if (!recaptchaToken) {
+    //   alert("Please check the 'I am not a robot' reCAPTCHA box.")
+    //   return
+    // }
 
-    // Submit form along with the g-recaptcha-response token to Formspree
     await handleSubmit(e)
 
-    // Reset captcha on completion
-    recaptchaRef.current?.reset()
-    setRecaptchaToken(null)
+    // recaptchaRef.current?.reset()
+    // setRecaptchaToken(null)
   }
 
   if (state.succeeded) {
     return (
-      <div className="flex min-h-100 flex-col items-center justify-center gap-4 rounded-2xl border bg-white p-8 text-center text-slate-900 shadow-sm">
+      <div className="flex min-h-100 flex-col items-center justify-center gap-4 rounded-2xl border bg-white p-4 text-center text-slate-900 shadow-sm sm:p-8">
         <CheckCircle2 className="h-16 w-16 animate-bounce text-emerald-500" />
         <h3 className="text-2xl font-bold text-slate-900">Message Sent!</h3>
         <p className="max-w-sm text-slate-600">
@@ -48,9 +48,9 @@ export default function ContactForm({ formId }: ContactFormProps) {
   }
 
   return (
-    <div className="rounded-2xl bg-white p-8 text-slate-900 shadow-lg">
+    <div className="w-full min-w-0 rounded-2xl bg-white p-4 text-slate-900 shadow-lg sm:p-8">
       <h3 className="mb-6 text-xl font-bold text-slate-900">Get in Touch</h3>
-      <form onSubmit={handleFormSubmit} className="space-y-4">
+      <form onSubmit={handleFormSubmit} className="space-y-2">
         <div>
           <label
             htmlFor="name"
@@ -106,30 +106,32 @@ export default function ContactForm({ formId }: ContactFormProps) {
         </div>
 
         {/* Hidden input to pass the reCAPTCHA token to Formspree */}
-        <input
+        {/* <input
           type="hidden"
           name="g-recaptcha-response"
           value={recaptchaToken || ""}
-        />
+        /> */}
 
-        {/* Google reCAPTCHA v2 Checkbox */}
-        <div className="pt-2">
-          {googleSiteKey ? (
-            <ReCAPTCHA
-              ref={recaptchaRef}
-              sitekey={googleSiteKey}
-              onChange={onCaptchaChange}
-            />
-          ) : (
-            <p className="text-xs text-red-500">
-              Missing reCAPTCHA site key. Check your .env file.
-            </p>
-          )}
-        </div>
+        {/* Scaled reCAPTCHA container for mobile displays */}
+        {/* <div className="flex w-full justify-start overflow-hidden pt-2">
+          <div className="xs:scale-[0.85] origin-left scale-[0.78] min-[400px]:scale-100">
+            {googleSiteKey ? (
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={googleSiteKey}
+                onChange={onCaptchaChange}
+              />
+            ) : (
+              <p className="text-xs text-red-500">
+                Something went wrong. Try again.
+              </p>
+            )}
+          </div>
+        </div> */}
 
         <button
           type="submit"
-          disabled={state.submitting || !recaptchaToken}
+          disabled={state.submitting}
           className="hover:bg-opacity-90 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-brand-green px-6 py-3 text-base font-medium text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Heart className="h-5 w-5 fill-current" />
