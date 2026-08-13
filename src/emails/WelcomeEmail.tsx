@@ -43,7 +43,11 @@ export const WelcomeEmail = ({
           </Text>
 
           {/* Main Action Hub Button */}
-          <Section style={{ textAlign: "center", margin: "24px 0" }}>
+          <Section
+            style={
+              { textAlign: "center", margin: "24px 0" } as React.CSSProperties
+            }
+          >
             <Button style={button} href="https://greenimpactinnovators.works">
               Explore our website
             </Button>
@@ -102,7 +106,11 @@ export const WelcomeEmail = ({
           </Section>
 
           {/* Dynamic Community Invitation Call */}
-          <Section style={{ ...sectionPadding, textAlign: "center" }}>
+          <Section
+            style={
+              { ...sectionPadding, textAlign: "center" } as React.CSSProperties
+            }
+          >
             <Heading as="h2" style={sectionHeading}>
               Grow with us
             </Heading>
@@ -122,14 +130,21 @@ export const WelcomeEmail = ({
               <tbody>
                 <tr>
                   <td
-                    style={{
-                      width: "50%",
-                      paddingRight: "12px",
-                      textAlign: "left",
-                      verticalAlign: "top",
-                    }}
+                    style={
+                      {
+                        width: "50%",
+                        paddingRight: "12px",
+                        textAlign: "left",
+                        verticalAlign: "top",
+                      } as React.CSSProperties
+                    }
                   >
-                    <Heading as="h3" style={{ ...panelHeading, marginTop: 0 }}>
+                    <Heading
+                      as="h3"
+                      style={
+                        { ...panelHeading, marginTop: 0 } as React.CSSProperties
+                      }
+                    >
                       Volunteer
                     </Heading>
                     <Text style={subtext}>
@@ -138,14 +153,21 @@ export const WelcomeEmail = ({
                     </Text>
                   </td>
                   <td
-                    style={{
-                      width: "50%",
-                      paddingLeft: "12px",
-                      textAlign: "left",
-                      verticalAlign: "top",
-                    }}
+                    style={
+                      {
+                        width: "50%",
+                        paddingLeft: "12px",
+                        textAlign: "left",
+                        verticalAlign: "top",
+                      } as React.CSSProperties
+                    }
                   >
-                    <Heading as="h3" style={{ ...panelHeading, marginTop: 0 }}>
+                    <Heading
+                      as="h3"
+                      style={
+                        { ...panelHeading, marginTop: 0 } as React.CSSProperties
+                      }
+                    >
                       Partner
                     </Heading>
                     <Text style={subtext}>
@@ -158,7 +180,11 @@ export const WelcomeEmail = ({
             </table>
 
             {/* Secondary CTA */}
-            <Section style={{ marginTop: "32px", marginBottom: "8px" }}>
+            <Section
+              style={
+                { textAlign: "center", margin: "24px 0" } as React.CSSProperties
+              }
+            >
               <Button style={button} href="https://greenimpactinnovators.works">
                 Get involved
               </Button>
@@ -168,14 +194,18 @@ export const WelcomeEmail = ({
           <Hr style={hr} />
 
           {/* Footer with Unsubscribe Option */}
-          <Section style={{ textAlign: "center" }}>
+          <Section style={{ textAlign: "center" } as React.CSSProperties}>
             <Text style={footerText}>
               Thank you for standing with us at the very beginning.
             </Text>
             <Text style={footerSignature}>
               — The Green Impact Innovators team
             </Text>
-            <Text style={{ ...footerText, marginTop: "16px" }}>
+            <Text
+              style={
+                { ...footerText, marginTop: "16px" } as React.CSSProperties
+              }
+            >
               Visit us at{" "}
               <Link
                 href="https://greenimpactinnovators.works"
