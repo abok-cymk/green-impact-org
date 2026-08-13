@@ -1,7 +1,5 @@
-// import React, { useRef, useState } from "react"
 import { useForm, ValidationError } from "@formspree/react"
 import { Heart, CheckCircle2 } from "lucide-react"
-// import ReCAPTCHA from "react-google-recaptcha"
 
 interface ContactFormProps {
   formId: string
@@ -9,29 +7,12 @@ interface ContactFormProps {
 
 export default function ContactForm({ formId }: ContactFormProps) {
   const [state, handleSubmit] = useForm(formId)
-  // const recaptchaRef = useRef<ReCAPTCHA>(null)
-  // const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
-
-  // const googleSiteKey = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY
-
-  // const onCaptchaChange = (token: string | null) => {
-  //   setRecaptchaToken(token)
-  // }
 
   const handleFormSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault()
-
-    // if (!recaptchaToken) {
-    //   alert("Please check the 'I am not a robot' reCAPTCHA box.")
-    //   return
-    // }
-
     await handleSubmit(e)
-
-    // recaptchaRef.current?.reset()
-    // setRecaptchaToken(null)
   }
 
   if (state.succeeded) {
@@ -104,30 +85,6 @@ export default function ContactForm({ formId }: ContactFormProps) {
             errors={state.errors}
           />
         </div>
-
-        {/* Hidden input to pass the reCAPTCHA token to Formspree */}
-        {/* <input
-          type="hidden"
-          name="g-recaptcha-response"
-          value={recaptchaToken || ""}
-        /> */}
-
-        {/* Scaled reCAPTCHA container for mobile displays */}
-        {/* <div className="flex w-full justify-start overflow-hidden pt-2">
-          <div className="xs:scale-[0.85] origin-left scale-[0.78] min-[400px]:scale-100">
-            {googleSiteKey ? (
-              <ReCAPTCHA
-                ref={recaptchaRef}
-                sitekey={googleSiteKey}
-                onChange={onCaptchaChange}
-              />
-            ) : (
-              <p className="text-xs text-red-500">
-                Something went wrong. Try again.
-              </p>
-            )}
-          </div>
-        </div> */}
 
         <button
           type="submit"

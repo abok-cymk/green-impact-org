@@ -9,9 +9,10 @@ export const siteConfig = {
 
 export const heroContent = {
   headline: "Nurturing Minds, Restoring Nature, Feeding Futures.",
-  subheadline: "We empower learners and communities to tackle this through a school-based forest garden approach.",
+  subheadline:
+    "We empower learners and communities to tackle climate change through a school based forest garden approach.",
   cta: "Support Our Mission",
-};
+}
 
 export const problemStats = [
   { label: "Learners missing lunch daily", value: "300+" },

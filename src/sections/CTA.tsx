@@ -2,10 +2,9 @@ import { motion } from "framer-motion"
 import { Section } from "@/components/layout/Section"
 import ContactForm from "@/components/ui/ContactForm"
 import { DonationModule } from "@/components/ui/DonationModule"
+import { FORMSPREE_ID_HASH } from "@/infrastructure/formspree"
 
 export function CTA() {
-  const FORMSPREE_ID_HASH = import.meta.env.VITE_FORMSPREE_ID_HASH
-
   return (
     <Section id="support" className="bg-brand-green text-white">
       <div className="grid items-center gap-12 md:grid-cols-2">

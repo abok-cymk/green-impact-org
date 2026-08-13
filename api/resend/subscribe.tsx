@@ -7,11 +7,21 @@ import { Ratelimit } from "@upstash/ratelimit"
 import { Redis } from "@upstash/redis"
 import WelcomeEmail from "../../src/emails/WelcomeEmail"
 
-const apiKey = process.env.RESEND_API_KEY
-const segmentAudienceId = process.env.RESEND_SEGMENT_AUDIENCE_ID
-const topicsID = process.env.RESEND_TOPICS_ID
-const upstashRedisUrl = process.env.UPSTASH_REDIS_REST_URL
-const upstashRedisToken = process.env.UPSTASH_REDIS_REST_TOKEN
+import {
+  RESEND_API_KEY,
+  RESEND_SEGMENT_AUDIENCE_ID,
+  RESEND_TOPICS_ID,
+} from "../infrastructure/resend"
+import {
+  UPSTASH_REDIS_REST_URL,
+  UPSTASH_REDIS_REST_TOKEN,
+} from "../infrastructure/upstash"
+
+const apiKey = RESEND_API_KEY
+const segmentAudienceId = RESEND_SEGMENT_AUDIENCE_ID
+const topicsID = RESEND_TOPICS_ID
+const upstashRedisUrl = UPSTASH_REDIS_REST_URL
+const upstashRedisToken = UPSTASH_REDIS_REST_TOKEN
 
 const resend = new Resend(apiKey)
 
