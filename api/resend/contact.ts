@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node"
 import { Resend } from "resend"
 import { z } from "zod"
-import { RESEND_API_KEY } from "../infrastructure/resend"
+import { RESEND_API_KEY } from "../infrastructure/resend.js"
 
 const resend = new Resend(RESEND_API_KEY)
 

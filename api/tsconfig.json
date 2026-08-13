@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "target": "es2020",
-    "module": "ESNext",
+    "module": "NodeNext",
     "lib": ["es2020"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "ignoreDeprecations": "6.0",
-    "moduleResolution": "Node",
+    "moduleResolution": "NodeNext",
     "types": ["node"],
     "baseUrl": ".",
     "jsx": "react-jsx",
