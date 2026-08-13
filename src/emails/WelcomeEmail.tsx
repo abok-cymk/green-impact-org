@@ -1,17 +1,16 @@
-import React from "react"
 import {
-  Body,
-  Button,
-  Container,
-  Head,
-  Heading,
   Html,
+  Head,
   Preview,
+  Body,
+  Container,
   Section,
+  Heading,
   Text,
+  Button,
   Hr,
   Link,
-} from "@react-email/components"
+} from "react-email"
 
 interface WelcomeEmailProps {
   unsubscribeUrl?: string

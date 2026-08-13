@@ -16,9 +16,8 @@
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.9",
     "@formspree/react": "^3.0.0",
-    "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.1.0",
-    "@react-email/tailwind": "^2.0.7",
+    "@react-email/ui": "^6.9.2",
     "@tailwindcss/vite": "^4",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.2",
@@ -32,6 +31,7 @@
     "radix-ui": "^1.6.2",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-email": "^6.9.2",
     "react-router-dom": "^7.18.1",
     "resend": "^6.18.1",
     "shadcn": "^4.13.0",
