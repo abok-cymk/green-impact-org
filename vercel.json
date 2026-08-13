@@ -1,0 +1,12 @@
+{
+  "framework": "vite",
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "rewrites": [{ "source": "/api/(.*)", "destination": "/api/$1" }],
+  "functions": {
+    "api/**/*.tsx": {
+      "maxDuration": 15
+    }
+  }
+}

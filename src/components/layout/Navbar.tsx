@@ -91,7 +91,23 @@ export function Navbar() {
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={() => setIsMobileOpen(false)}
+                  onClick={(e) => {
+                    const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
+                    if (href && href.startsWith('#') && href.length > 1) {
+                      e.preventDefault();
+                      setIsMobileOpen(false);
+                      requestAnimationFrame(() => {
+                        const target = document.querySelector(href);
+                        if (target) {
+                          const offset = 80;
+                          const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                          window.scrollTo({ top, behavior: 'smooth' });
+                        }
+                      });
+                    } else {
+                      setIsMobileOpen(false);
+                    }
+                  }}
                   className="text-base font-medium text-slate-700 hover:text-brand-green"
                 >
                   {link.name}
@@ -99,7 +115,23 @@ export function Navbar() {
               ))}
               <a
                 href="#support"
-                onClick={() => setIsMobileOpen(false)}
+                onClick={(e) => {
+                  const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
+                  if (href && href.startsWith('#') && href.length > 1) {
+                    e.preventDefault();
+                    setIsMobileOpen(false);
+                    requestAnimationFrame(() => {
+                      const target = document.querySelector(href);
+                      if (target) {
+                        const offset = 80;
+                        const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                        window.scrollTo({ top, behavior: 'smooth' });
+                      }
+                    });
+                  } else {
+                    setIsMobileOpen(false);
+                  }
+                }}
                 className="inline-flex items-center justify-center rounded-full bg-brand-green px-5 py-3 text-base font-medium text-white text-center"
               >
                 Support Us
