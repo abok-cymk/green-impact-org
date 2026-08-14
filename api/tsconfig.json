@@ -9,7 +9,6 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "NodeNext",
     "types": ["node"],
-    "baseUrl": ".",
     "jsx": "react-jsx",
     "paths": {
       "@/*": ["../src/*"]
