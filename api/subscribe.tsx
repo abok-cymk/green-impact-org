@@ -8,6 +8,12 @@ import { Redis } from "@upstash/redis"
 import WelcomeEmail from "./_server/emails/WelcomeEmail"
 
 import {
+  generateFormToken,
+  decryptFormToken,
+} from "./_server/lib/helpers"
+import { TOKEN_EXPIRY_MS } from "./_server/lib/constants"
+
+import {
   RESEND_API_KEY,
   RESEND_SEGMENT_AUDIENCE_ID,
   RESEND_TOPICS_ID,
@@ -42,8 +48,10 @@ const SubscribeSchema = z.object({
   email: z
     .string()
     .trim()
-    .pipe(z.email())
+    .pipe(z.email("Invalid email address"))
     .transform((value) => value.toLowerCase()),
+  website: z.string().optional(),
+  formToken: z.string().min(1, "Security token missing"),
 })
 
 function buildContactPayload(email: string) {
@@ -65,6 +73,11 @@ function getClientIp(req: VercelRequest) {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method === "GET") {
+    const token = generateFormToken()
+    return res.status(200).json({ token })
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" })
   }
@@ -76,14 +89,37 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .json({ error: "Newsletter service configuration missing" })
   }
 
-  const body = req.body
-  const parsedBody = SubscribeSchema.safeParse(body)
+  const parsedBody = SubscribeSchema.safeParse(req.body)
 
   if (!parsedBody.success) {
-    return res.status(400).json({ error: "Invalid email address" })
+    const tree = z.treeifyError(parsedBody.error)
+    return res.status(400).json({ error: "Invalid email address or security token", details: tree })
   }
 
-  const { email } = parsedBody.data
+  const { email, website, formToken } = parsedBody.data
+
+  if (website && website.trim() !== "") {
+    console.warn(`Newsletter Honeypot triggered by: ${email}`)
+    return res.status(200).json({ success: true, id: "honeypot-triggered" })
+  }
+
+  // Token integrity check
+  const initialTime = decryptFormToken(formToken)
+  if (initialTime == null) {
+    console.warn("Newsletter: Invalid or tampered security token received.")
+    return res.status(400).json({ error: "Security validation failed." })
+  }
+
+  const currentTime = Date.now()
+  const msElapsed = currentTime - initialTime
+
+  if (msElapsed > TOKEN_EXPIRY_MS) {
+    console.warn(`Newsletter: Expired token used by ${email}`)
+    return res.status(400).json({
+      error: "Form session expired. Please refresh the page and try again.",
+    })
+  }
+
   const clientIp = getClientIp(req)
 
   try {
