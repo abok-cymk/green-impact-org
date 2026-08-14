@@ -5,17 +5,17 @@ import { render } from "@react-email/render"
 import { z } from "zod"
 import { Ratelimit } from "@upstash/ratelimit"
 import { Redis } from "@upstash/redis"
-import WelcomeEmail from "../emails/WelcomeEmail"
+import WelcomeEmail from "../../server/emails/WelcomeEmail"
 
 import {
   RESEND_API_KEY,
   RESEND_SEGMENT_AUDIENCE_ID,
   RESEND_TOPICS_ID,
-} from "../infrastructure/resend.js"
+} from "../../server/infrastructure/resend"
 import {
   UPSTASH_REDIS_REST_URL,
   UPSTASH_REDIS_REST_TOKEN,
-} from "../infrastructure/upstash.js"
+} from "../../server/infrastructure/upstash"
 
 const apiKey = RESEND_API_KEY
 const segmentAudienceId = RESEND_SEGMENT_AUDIENCE_ID
@@ -107,18 +107,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         })
         existingContact = contactRes.data
       } catch (err: any) {
-        // If error status is NOT 404, log it (e.g. rate limit, bad API key)
         if (err?.statusCode !== 404 && err?.status !== 404) {
           console.warn("Resend lookup error:", err.message || err)
         }
       }
 
-      // Check duplicate status safely
       if (existingContact && existingContact.unsubscribed === false) {
         return res.status(200).json({ success: true, alreadySubscribed: true })
       }
 
-      // Update or Create Contact
       if (existingContact) {
         await resend.contacts.update(buildContactPayload(email))
       } else {

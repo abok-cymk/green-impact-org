@@ -1,14 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import axios from 'axios';
 
-/**
- * PesaPal V3 API Implementation Strategy:
- * 1. Environment Targeting: Sandbox vs Production
- * 2. Token Management: Request temporary Bearer token (valid for 5 mins)
- * 3. IPN Integration: Use a registered notification_id for status updates
- * 4. Order Submission: Create a unique merchant reference and billing object
- */
-
 const PESAPAL_URLS = {
   sandbox: 'https://cybqa.pesapal.com/pesapalv3',
   production: 'https://pay.pesapal.com/v3'
@@ -18,12 +10,10 @@ const IS_PRODUCTION = process.env.PESAPAL_MODE === 'production';
 const BASE_URL = IS_PRODUCTION ? PESAPAL_URLS.production : PESAPAL_URLS.sandbox;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // 1. Security: Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  // 2. Security: Validate incoming payload
   const { amount, description, email, firstName, lastName } = req.body;
   
   if (!amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
@@ -34,15 +24,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const consumerSecret = process.env.PESAPAL_CONSUMER_SECRET;
   const ipnId = process.env.PESAPAL_IPN_ID;
 
-  // 3. Security: Fail-safe check for credentials
   if (!consumerKey || !consumerSecret || !ipnId) {
     console.error('Missing PesaPal configuration in environment variables.');
     return res.status(500).json({ error: 'Gateway configuration is incomplete.' });
   }
 
   try {
-    // STEP A: Authentication
-    // Get temporary access token (Bearer)
     const authResponse = await axios.post(`${BASE_URL}/api/Auth/RequestToken`, {
       consumer_key: consumerKey,
       consumer_secret: consumerSecret
@@ -58,8 +45,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       throw new Error('PesaPal Authentication failed: No token returned.');
     }
 
-    // STEP B: Prepare Order
-    // Reference must be unique for every request (max 50 chars)
     const merchantReference = `GII-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
     const paymentPayload = {
@@ -77,7 +62,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     };
 
-    // STEP C: Submit Order Request
     const orderResponse = await axios.post(
       `${BASE_URL}/api/Transactions/SubmitOrderRequest`,
       paymentPayload,
@@ -90,7 +74,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     );
 
-    // STEP D: Process Response
     if (orderResponse.data && orderResponse.data.redirect_url) {
       return res.status(200).json({ 
         redirect_url: orderResponse.data.redirect_url,
