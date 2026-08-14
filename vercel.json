@@ -3,6 +3,14 @@
   "buildCommand": "pnpm run build",
   "outputDirectory": "dist",
   "cleanUrls": true,
-  "rewrites": [{ "source": "/api/(.*)", "destination": "/api/$1" }],
-  "functions": { "api/**/*.{ts,tsx}": { "maxDuration": 15 } }
+  "rewrites": [
+    { "source": "/api/resend/contact", "destination": "/api/contact" },
+    { "source": "/api/resend/subscribe", "destination": "/api/subscribe" },
+    { "source": "/api/pesapal/initiate", "destination": "/api/pesapal-initiate" },
+    { "source": "/api/pesapal/ipn", "destination": "/api/pesapal-ipn" },
+    { "source": "/api/(.*)", "destination": "/api/$1" }
+  ],
+  "functions": {
+    "api/*.{ts,tsx}": { "maxDuration": 15 }
+  }
 }

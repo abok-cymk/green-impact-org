@@ -15,9 +15,9 @@
     }
   },
   "include": [
-    "pesapal/**/*.ts",
-    "resend/**/*.ts",
-    "resend/subscribe.tsx",
-    "resend/contact.ts"
+    "*.ts",
+    "*.tsx",
+    "_server/**/*.ts",
+    "_server/**/*.tsx"
   ]
 }
