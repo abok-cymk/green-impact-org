@@ -5,17 +5,17 @@ import { render } from "@react-email/render"
 import { z } from "zod"
 import { Ratelimit } from "@upstash/ratelimit"
 import { Redis } from "@upstash/redis"
-import WelcomeEmail from "./_server/emails/WelcomeEmail.js"
+import WelcomeEmail from "./_server/emails/WelcomeEmail"
 
 import {
   RESEND_API_KEY,
   RESEND_SEGMENT_AUDIENCE_ID,
   RESEND_TOPICS_ID,
-} from "./_server/infrastructure/resend.js"
+} from "./_server/infrastructure/resend"
 import {
   UPSTASH_REDIS_REST_URL,
   UPSTASH_REDIS_REST_TOKEN,
-} from "./_server/infrastructure/upstash.js"
+} from "./_server/infrastructure/upstash"
 
 const apiKey = RESEND_API_KEY
 const segmentAudienceId = RESEND_SEGMENT_AUDIENCE_ID
