@@ -4,11 +4,11 @@ import {
   generateFormToken,
   decryptFormToken,
   sanitizeInput,
-} from "../lib/helpers.js"
-import { TOKEN_EXPIRY_MS } from "../lib/constants.js"
-import { contactSchema } from "./schema.js"
-import { hasMailServer, isDisposable, isSyntaxValid } from "./validators.js"
-import { sendContactEmail } from "./mailer.js"
+} from "../../server/lib/helpers.js"
+import { TOKEN_EXPIRY_MS } from "../../server/lib/constants.js"
+import { contactSchema } from "../../server/resend/schema.js"
+import { hasMailServer, isDisposable, isSyntaxValid } from "../../server/resend/validators.js"
+import { sendContactEmail } from "../../server/resend/mailer.js"
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === "GET") {
