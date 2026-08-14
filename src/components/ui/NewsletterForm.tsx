@@ -1,42 +1,42 @@
-import React, { useState } from "react";
+import React from "react";
+import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
+import { fetchToken, sendForm } from "@/lib/helpers";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
+
 export default function NewsletterForm() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error" | "duplicate">("idle");
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!email) return;
-
-    setStatus("loading");
-
-    try {
-      const response = await fetch("/api/resend/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await response.json().catch(() => null) as
-        | { success?: boolean; alreadySubscribed?: boolean; error?: string }
-        | null;
-
-      if (response.ok && data?.alreadySubscribed) {
-        setStatus("duplicate");
-        return;
-      }
-
-      if (response.ok) {
-        setStatus("success");
-        setEmail("");
-      } else {
-        setStatus("error");
-      }
-    } catch {
-      setStatus("error");
+  const { data: formToken, isLoading: isLoadingToken } = useSWR(
+    "/api/resend/subscribe",
+    fetchToken,
+    {
+      revalidateOnFocus: true,
+      revalidateIfStale: true,
+      dedupingInterval: 0,
     }
+  );
+
+  const {
+    trigger,
+    isMutating,
+    error: submitError,
+    data: submitResult,
+  } = useSWRMutation("/api/resend/subscribe", sendForm);
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!formToken) return;
+
+    const formData = new FormData(e.currentTarget);
+    formData.append("formToken", formToken);
+    const payload = Object.fromEntries(formData.entries());
+
+    trigger(payload);
   };
+
+  const isAlreadySubscribed = submitResult && (submitResult as any).alreadySubscribed;
 
   return (
     <div className="w-full max-w-xl space-y-2">
@@ -47,28 +47,57 @@ export default function NewsletterForm() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex gap-2 w-full max-w-lg items-center">
-        <Input
-          type="email"
-          placeholder="email@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={status === "loading"}
-          required
-          className="h-11 bg-white border-gray-300 placeholder:text-gray-400 focus-visible:ring-1"
-        />
-        <Button
-          type="submit"
-          disabled={status === "loading"}
-          className="h-11 px-6 uppercase italic font-bold tracking-wider rounded-r-md bg-emerald-600 text-white hover:bg-emerald-700 shrink-0"
-        >
-          {status === "loading" ? "..." : "Subscribe"}
-        </Button>
-      </form>
+      <form onSubmit={handleFormSubmit} className="flex flex-col gap-2 w-full max-w-lg">
+        {/* Honeypot Field wrapper */}
+        <div className="absolute top-[-9999px] left-[-9999px]" aria-hidden="true">
+          <label htmlFor="website-newsletter">Leave this field blank</label>
+          <input
+            type="text"
+            id="website-newsletter"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
 
-      {status === "success" && <p className="text-xs text-green-600 font-medium">Successfully subscribed!</p>}
-      {status === "duplicate" && <p className="text-xs text-amber-700 font-medium">You&apos;re already subscribed.</p>}
-      {status === "error" && <p className="text-xs text-destructive font-medium">Something went wrong. Try again.</p>}
+        <div className="flex gap-2 w-full items-center">
+          <Input
+            type="email"
+            name="email"
+            placeholder="email@example.com"
+            disabled={isMutating || isLoadingToken}
+            required
+            className="h-11 bg-white border-gray-300 placeholder:text-gray-400 focus-visible:ring-1"
+          />
+          <Button
+            type="submit"
+            disabled={isMutating || isLoadingToken || !formToken}
+            className="h-11 px-6 uppercase italic font-bold tracking-wider rounded-r-md bg-emerald-600 text-white hover:bg-emerald-700 shrink-0"
+          >
+            {isMutating ? "..." : "Subscribe"}
+          </Button>
+        </div>
+
+        {submitError && (
+          <Alert variant="destructive" className="animate-in fade-in slide-in-from-top-1 duration-200 mt-2">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Subscription Error</AlertTitle>
+            <AlertDescription>{submitError.message}</AlertDescription>
+          </Alert>
+        )}
+
+        {submitResult && !isAlreadySubscribed && (
+          <p className="text-xs text-green-600 font-medium flex items-center gap-1 mt-1">
+            <CheckCircle2 className="h-4 w-4" /> Successfully subscribed!
+          </p>
+        )}
+
+        {isAlreadySubscribed && (
+          <p className="text-xs text-amber-700 font-medium mt-1">
+            You&apos;re already subscribed.
+          </p>
+        )}
+      </form>
     </div>
   );
 }
