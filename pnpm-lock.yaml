@@ -38,12 +38,18 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      disposable-email-domains:
+        specifier: ^1.0.62
+        version: 1.0.62
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.2.8)
       framer-motion:
         specifier: ^12.42.2
         version: 12.43.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      isemail:
+        specifier: ^3.2.0
+        version: 3.2.0
       lucide-react:
         specifier: ^1.24.0
         version: 1.31.0(react@19.2.8)
@@ -2742,6 +2748,9 @@ packages:
     resolution: {integrity: sha512-DPi0FmjiSU5EvQV0++GFDOJ9ASQUVFh5kD+OzOnYdi7n3Wpm9hWWGfB/O2blfHcMVTL5WkQXSnRiK9makhrcnw==}
     engines: {node: '>=0.3.1'}
 
+  disposable-email-domains@1.0.62:
+    resolution: {integrity: sha512-LBQvhRw7mznQTPoyZbsmYeNOZt1pN5aCsx4BAU/3siVFuiM9f2oyKzUaB8v1jbxFjE3aYqYiMo63kAL4pHgfWQ==}
+
   dom-accessibility-api@0.5.16:
     resolution: {integrity: sha512-X7BJ2yElsnOJ30pZF4uIIDfBEVgF4XEBxL9Bxhy6dnrm5hkzqmsWHGTiHqRiITNhMyFLyAiWndIJP7Z1NTteDg==}
 
@@ -3350,6 +3359,10 @@ packages:
   is-wsl@3.1.1:
     resolution: {integrity: sha512-e6rvdUCiQCAuumZslxRJWR/Doq4VpPR82kqclvcS0efgt430SlGIk05vdCN58+VrzgtIcfNODjozVielycD4Sw==}
     engines: {node: '>=16'}
+
+  isemail@3.2.0:
+    resolution: {integrity: sha512-zKqkK+O+dGqevc93KNsbZ/TqTUFd46MwWjYOoMrjIMZ51eU7DtQG3Wmd9SQQT7i7RVnuTPEiYEWHU3MSbxC1Tg==}
+    engines: {node: '>=4.0.0'}
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
@@ -7256,6 +7269,8 @@ snapshots:
 
   diff@8.0.4: {}
 
+  disposable-email-domains@1.0.62: {}
+
   dom-accessibility-api@0.5.16: {}
 
   dom-accessibility-api@0.6.3: {}
@@ -7959,6 +7974,10 @@ snapshots:
   is-wsl@3.1.1:
     dependencies:
       is-inside-container: 1.0.0
+
+  isemail@3.2.0:
+    dependencies:
+      punycode: 2.3.1
 
   isexe@2.0.0: {}
 
