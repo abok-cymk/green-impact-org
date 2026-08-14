@@ -6,7 +6,10 @@ export const fetchToken = async (url: string): Promise<string> => {
   return data.token
 }
 
-export const sendForm = async (url: string, { arg }: { arg: Record<string, any> }) => {
+export const sendForm = async (
+  url: string,
+  { arg }: { arg: Record<string, any> }
+) => {
   const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -15,7 +18,13 @@ export const sendForm = async (url: string, { arg }: { arg: Record<string, any> 
 
   if (!response.ok) {
     const errorData = await response.json()
-    throw new Error(errorData.details || errorData.error || "Failed to send message")
+    const errorMessage =
+      errorData.message ||
+      (typeof errorData.details === "string"
+        ? errorData.details
+        : errorData.error) ||
+      "Failed to send message"
+    throw new Error(errorMessage)
   }
   return response.json()
 }

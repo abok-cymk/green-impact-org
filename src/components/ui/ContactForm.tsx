@@ -5,18 +5,16 @@ import { fetchToken, sendForm } from "@/lib/helpers"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 export default function ContactForm() {
-  // 3. Retrieve token with security overrides to prevent caching
   const { data: formToken, isLoading: isLoadingToken } = useSWR(
     "/api/resend/contact",
     fetchToken,
     {
-      revalidateOnFocus: true, // Refreshes token automatically if the user shifts tabs and returns
+      revalidateOnFocus: true, 
       revalidateIfStale: true,
-      dedupingInterval: 0, // Guarantees Vite always requests a fresh token, bypassing browser cache
+      dedupingInterval: 0, 
     }
   )
 
-  // 4. Set up the SWR mutation trigger for the form data submission
   const {
     trigger,
     isMutating,

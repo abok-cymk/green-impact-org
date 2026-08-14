@@ -1,35 +1,14 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node"
-import { Resend } from "resend"
 import { z } from "zod"
-import { RESEND_API_KEY } from "../infrastructure/resend.js"
 import {
   generateFormToken,
   decryptFormToken,
   sanitizeInput,
 } from "../lib/helpers.js"
 import { TOKEN_EXPIRY_MS } from "../lib/constants.js"
-
-const resend = new Resend(RESEND_API_KEY)
-
-const contactSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "Name is required")
-    .max(100, "Name is too long"),
-  email: z
-    .string()
-    .trim()
-    .pipe(z.email("Invalid email address"))
-    .transform((v) => v.toLowerCase()),
-  message: z
-    .string()
-    .trim()
-    .min(1, "Message is required")
-    .max(5000, "Message is too long"),
-  website: z.string().optional(),
-  formToken: z.string().min(1, "Security token missing"),
-})
+import { contactSchema } from "./schema.js"
+import { hasMailServer, isDisposable, isSyntaxValid } from "./validators.js"
+import { sendContactEmail } from "./mailer.js"
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === "GET") {
@@ -45,9 +24,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const parsedBody = contactSchema.safeParse(req.body)
 
     if (!parsedBody.success) {
+      const tree = z.treeifyError(parsedBody.error)
       return res.status(400).json({
         error: "Validation failed",
-        details: parsedBody.error.flatten().fieldErrors,
+        details: tree,
       })
     }
 
@@ -66,11 +46,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
     const currentTime = Date.now()
 
-    if (!initialTime) {
-      console.warn("Invalid or tampered security token received.")
-      res.status(400).json({ error: "Security validation failed." })
-    }
-
     const msElapsed = currentTime - initialTime
     const secondsElapsed = msElapsed / 1000
 
@@ -81,7 +56,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(200).json({ success: true, id: "timer-triggered" })
     }
 
-    // 5. Upper-bound expiry check (Too slow = Expired)
+    if (!isSyntaxValid(email)) {
+      return res
+        .status(400)
+        .json({ error: "The email formatting is invalid or unsupported." })
+    }
+
+    if (isDisposable(email)) {
+      console.warn(
+        `Blocked registration request using disposable email domain: ${email}`
+      )
+      return res.status(400).json({
+        error:
+          "Temporary or disposable email addresses are not allowed. Please provide a standard email account.",
+      })
+    }
+
+    const activeProvider = await hasMailServer(email)
+    if (!activeProvider) {
+      return res.status(400).json({
+        errorCode: "NO_MX",
+        message:
+          "We couldn't verify that email address. Please check the address or try a different email.",
+      })
+    }
+
     if (msElapsed > TOKEN_EXPIRY_MS) {
       console.warn(`Expired token used by ${email}`)
       return res.status(400).json({
@@ -89,11 +88,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       })
     }
 
-    // 6. Security Measure: Sanitize inputs to block Email XSS / Layout Breaking
     const safeName = sanitizeInput(name)
     const safeMessage = sanitizeInput(message)
 
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await sendContactEmail({
       from: "Green Impact Innovators <info@greenimpactinnovators.works>",
       to: "greenimpactinnovators@gmail.com",
       replyTo: email,

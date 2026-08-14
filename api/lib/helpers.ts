@@ -1,5 +1,6 @@
 import crypto from "crypto"
 import { ALGORITHM, ENCRYPTION_KEY } from "../lib/constants.js"
+import dns from "dns/promises"
 
 // Helper to escape dangerous characters and prevent HTML/XSS injection in emails
 export function sanitizeInput(str: string): string {
@@ -33,5 +34,26 @@ export function decryptFormToken(token: string): number | null {
     return parseInt(decrypted, 10)
   } catch (err) {
     return null
+  }
+}
+
+// 1. Helper function to check if the email provider actually exists
+export async function hasValidMailServer(email: string): Promise<boolean> {
+  try {
+    const domain = email.split("@")[1]
+    if (!domain) return false
+
+    // Resolve the active Mail Exchange (MX) records for the domain
+    const mxRecords = await dns.resolveMx(domain)
+    return mxRecords && mxRecords.length > 0
+  } catch (error) {
+    // In non-production environments (development/testing), bypass strict MX failures
+    // to allow testing with mock domains like example.com or local addresses.
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(`[DEV] Bypassing missing MX records for domain: ${email}`)
+      return true
+    }
+    // If the domain has no email server, it will throw an error
+    return false
   }
 }
