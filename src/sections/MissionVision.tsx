@@ -17,10 +17,10 @@ export default function MissionVision({ vision, mission }: MissionVisionProps) {
   return (
     <section
       id="mission-vision"
-      className="relative overflow-hidden py-16 sm:py-24 lg:py-32 bg-white"
+      className="relative overflow-hidden py-16 sm:py-24 lg:py-32"
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex flex-col gap-24 lg:gap-32">
+        <div className="flex flex-col gap-8">
           <MissionVisionRow
             eyebrow={vision.eyebrow}
             title={vision.title}

@@ -45,7 +45,7 @@ export function Navbar() {
             Green Impact
           </span> */}
           <AppImage src='images/logo.png' alt='Green Impact Innovators' 
-          className='w-40 rounded-none bg-none'/>
+          className='w-40 rounded-none bg-none mix-blend-multiply'/>
         </a>
 
         {/* Desktop Nav */}
