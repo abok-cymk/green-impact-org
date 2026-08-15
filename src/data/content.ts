@@ -1,4 +1,4 @@
-import { Sprout, TreePine, Recycle, GraduationCap } from 'lucide-react';
+import { Sprout, TreePine, Recycle, GraduationCap, Users } from 'lucide-react';
 
 export const siteConfig = {
   name: "Green Impact Innovators",
@@ -39,6 +39,11 @@ export const solutionPillars = [
     title: "Youth Climate Leadership",
     desc: "Hands-on education integrating agriculture, environment, and leadership.",
     icon: GraduationCap,
+  },
+  {
+    title: "Community Resilience",
+    desc: "Empowering local households and teachers with sustainable skills that ripple across generations for lasting impact.",
+    icon: Users,
   },
 ];
 

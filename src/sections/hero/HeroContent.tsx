@@ -9,7 +9,7 @@ export function HeroContent() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="inline-flex items-center rounded-full border border-brand-green/20 bg-brand-green/5 px-3 py-1 text-sm font-medium text-brand-green"
+        className="inline-flex items-center rounded-full border border-brand-green/20 bg-emerald-100 px-3 py-1 text-sm font-medium text-brand-green"
       >
         <span className="mr-2 flex h-2 w-2 rounded-full bg-brand-green"></span>
         Green Impact Innovators

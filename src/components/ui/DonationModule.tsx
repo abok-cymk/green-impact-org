@@ -21,7 +21,7 @@ export function DonationModule() {
     <div className="flex flex-col h-full justify-between">
       <div>
         <h2 className="text-3xl md:text-4xl font-bold mb-6">Support Our Mission</h2>
-        <p className="text-white/80 text-lg mb-8">
+        <p className="text-slate-800 text-lg mb-8">
           Every contribution helps us expand climate education, establish more forest gardens, and equip young people to lead sustainable change in their communities.
         </p>
 
@@ -31,9 +31,9 @@ export function DonationModule() {
             <span>Funding Progress</span>
             <span>15% / 100%</span>
           </div>
-          <div className="w-full bg-white/20 rounded-full h-3">
+          <div className="w-full bg-slate-500 rounded-full h-3">
             <div 
-              className="bg-brand-gold h-3 rounded-full transition-all duration-1000" 
+              className="bg-brand-green h-3 rounded-full transition-all duration-1000" 
               style={{ width: "15%" }}
             ></div>
           </div>
@@ -48,7 +48,7 @@ export function DonationModule() {
             </div>
           </div>
 
-          <label className="block text-sm font-medium text-white/90">Select Donation Amount (KES)</label>
+          <label className="block text-sm font-medium text-slate-800">Select Donation Amount (KES)</label>
           <div className="grid grid-cols-4 gap-2">
             {presetAmounts.map((preset) => (
               <button
@@ -58,7 +58,7 @@ export function DonationModule() {
                 className={`py-2 text-center rounded-lg text-sm font-bold border transition-all ${
                   amount === preset && !isCustom
                     ? "bg-brand-gold border-brand-gold text-slate-900 shadow-md"
-                    : "bg-white/10 border-white/20 text-white"
+                    : "bg-brand-green border-white/20 text-white"
                 }`}
               >
                 {preset}
@@ -70,7 +70,7 @@ export function DonationModule() {
             <button
               type="button"
               disabled
-              className="px-4 py-2 rounded-lg text-xs font-semibold border bg-white/5 border-white/20"
+              className="px-4 py-2 rounded-lg text-xs font-semibold border bg-slate-800 border-white"
             >
               Custom Amount
             </button>
@@ -79,7 +79,7 @@ export function DonationModule() {
           <button
             type="submit"
             disabled
-            className="w-full mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-6 py-3.5 text-base font-semibold text-slate-900 shadow-lg opacity-50 cursor-not-allowed"
+            className="w-full mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-brand-green px-6 py-3.5 text-base font-semibold text-white shadow-lg opacity-50 cursor-not-allowed"
           >
             <CreditCard className="h-5 w-5" />
             Donate KES {parseFloat(amount || "0").toLocaleString()}
@@ -89,11 +89,11 @@ export function DonationModule() {
 
       <div className="flex flex-col gap-4 mt-8 pt-6 border-t border-white/10">
         <a 
-          href="mailto:ambrose@greenimpactinnovators.works" 
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-white/10 border border-white/20 px-6 py-3 text-base font-medium text-white hover:bg-white hover:text-brand-green transition-colors"
+          href="mailto:odimambrose@greenimpactinnovators.works" 
+          className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3 text-base font-medium text-white bg-brand-green transition-colors"
         >
           <Mail className="h-5 w-5" />
-          Partner With Us (Corporate / NGO)
+          Partner With Us <span className="max-sm:hidden">(Corporate / NGO)</span>
         </a>
       </div>
     </div>

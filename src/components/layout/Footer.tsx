@@ -3,7 +3,7 @@ import NewsletterForm from "@/components/ui/NewsletterForm";
 
 export function Footer() {
   return (
-    <footer className="bg-slate-50 text-slate-800 py-12 px-6 border-t border-slate-100">
+    <footer className="text-slate-800 py-12 px-6 border-t border-slate-100">
       <div className="mx-auto max-w-6xl flex flex-col md:flex-row justify-between items-start gap-8">
         
         {/* Left Side: Branding and Subscription */}
@@ -12,7 +12,7 @@ export function Footer() {
             <AppImage 
               src="images/logo.png" 
               alt="Green Impact Innovators" 
-              className="w-44 h-auto rounded-none bg-none object-contain" 
+              className="w-40 h-auto rounded-none bg-none mix-blend-multiply" 
             />
           </div>
           <p className="text-slate-600 text-sm leading-relaxed">

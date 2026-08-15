@@ -30,7 +30,7 @@ function SectionFallback() {
 function App() {
   return (
     <SmoothScrollProvider>
-      <div className="min-h-screen bg-off-white">
+      <div className="min-h-screen bg-linear-to-b from-slate-50/50 to-white">
         <Navbar />
         <main>
           <Hero />

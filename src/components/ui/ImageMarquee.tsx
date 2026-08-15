@@ -10,7 +10,7 @@ export function ImageMarquee({ row1, row2, row3 }: ImageMarqueeProps) {
   const loop = (arr: typeof row1) => [...arr, ...arr];
 
   return (
-    <div className="relative flex flex-col gap-6 overflow-hidden py-16 bg-brand-green/5">
+    <div className="relative flex flex-col gap-6 overflow-hidden py-16">
       {/* Fade edges */}
       <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-linear-to-r from-off-white to-transparent z-10" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-linear-to-l from-off-white to-transparent z-10" />

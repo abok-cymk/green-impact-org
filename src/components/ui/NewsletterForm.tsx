@@ -72,7 +72,7 @@ export default function NewsletterForm() {
           <Button
             type="submit"
             disabled={isMutating || isLoadingToken || !formToken}
-            className="h-11 px-6 uppercase italic font-bold tracking-wider rounded-r-md bg-emerald-600 text-white hover:bg-emerald-700 shrink-0"
+            className="h-11 px-6 uppercase italic font-bold tracking-wider rounded-r-md bg-brand-green text-white hover:bg-emerald-700 shrink-0"
           >
             {isMutating ? "..." : "Subscribe"}
           </Button>

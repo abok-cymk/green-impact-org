@@ -4,14 +4,14 @@ import { HeroMobileCarousel } from "./hero/HeroMobileCarousel"
 import { HeroDesktopVisual } from "./hero/HeroDesktopVisual"
 
 const heroImages = [
-  { src: "images/tree-nursery-05.webp", alt: "Students planting trees" },
-  { src: "images/forest-garden-approach-01.webp", alt: "Forest garden spiral" },
+  { src: "images/tree-nursery-01.webp", alt: "Students planting trees" },
+  { src: "images/cleanup-recycling-02.webp", alt: "Forest garden spiral" },
   { src: "images/gallery-05.webp", alt: "Garden spiral" },
 ]
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden bg-off-white pt-24 pb-12">
+    <section className="relative flex min-h-screen items-center overflow-hidden pt-24 pb-12">
       <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
         <HeroContent />
         <motion.div
