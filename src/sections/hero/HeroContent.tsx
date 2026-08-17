@@ -12,7 +12,7 @@ export function HeroContent() {
         className="inline-flex items-center rounded-full border border-brand-green/20 bg-emerald-100 px-3 py-1 text-sm font-medium text-brand-green"
       >
         <span className="mr-2 flex h-2 w-2 rounded-full bg-brand-green"></span>
-        Green Impact Innovators
+        empower.act.impact
       </motion.div>
 
       {/* H1 is critical for LCP - rendered immediately without motion delay */}
