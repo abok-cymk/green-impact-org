@@ -1,7 +1,7 @@
 import { motion } from "framer-motion"
 import { HeroContent } from "./hero/HeroContent"
 import { HeroMobileCarousel } from "./hero/HeroMobileCarousel"
-import { HeroDesktopVisual } from "./hero/HeroDesktopVisual"
+import { HeroDesktopVideo } from "./hero/HeroDesktopVideo"
 
 const heroImages = [
   { src: "images/tree-nursery-01.webp", alt: "Students planting trees" },
@@ -21,7 +21,8 @@ export function Hero() {
           className="relative w-full"
         >
           <HeroMobileCarousel images={heroImages} />
-          <HeroDesktopVisual images={heroImages} />
+          {/* <HeroDesktopVisual images={heroImages} /> */}
+          <HeroDesktopVideo />
         </motion.div>
       </div>
     </section>

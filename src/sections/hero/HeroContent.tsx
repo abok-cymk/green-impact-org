@@ -5,7 +5,7 @@ import { heroContent } from "@/data/content"
 export function HeroContent() {
   return (
     <div className="z-10 space-y-6 px-6">
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -13,7 +13,7 @@ export function HeroContent() {
       >
         <span className="mr-2 flex h-2 w-2 rounded-full bg-brand-green"></span>
         empower.act.impact
-      </motion.div>
+      </motion.div> */}
 
       {/* H1 is critical for LCP - rendered immediately without motion delay */}
       <h1 className="text-4xl leading-[1.1] font-bold tracking-tight text-slate-900 md:text-6xl font-display">
@@ -46,7 +46,7 @@ export function HeroContent() {
           href="#impact"
           className="inline-flex items-center justify-center rounded-md border border-slate-200 bg-white px-6 py-3 text-sm font-medium text-slate-900 shadow-sm transition-colors hover:bg-slate-50"
         >
-          View Impact
+          Explore Impact
         </a>
       </motion.div>
     </div>
