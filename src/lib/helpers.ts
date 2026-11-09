@@ -18,12 +18,17 @@ export const sendForm = async (
 
   if (!response.ok) {
     const errorData = await response.json()
-    const errorMessage =
+    let errorMessage =
       errorData.message ||
       (typeof errorData.details === "string"
         ? errorData.details
         : errorData.error) ||
       "Failed to send message"
+    if (errorData.debug?.operation) {
+      errorMessage += ` [${errorData.debug.operation}${
+        errorData.debug.causeCode ? `: ${errorData.debug.causeCode}` : ""
+      }]`
+    }
     throw new Error(errorMessage)
   }
   return response.json()

@@ -5,7 +5,7 @@ import { render } from "@react-email/render"
 import { z } from "zod"
 import { Ratelimit } from "@upstash/ratelimit"
 import { Redis } from "@upstash/redis"
-import WelcomeEmail from "./_server/emails/WelcomeEmail"
+import { WelcomeEmail } from "./_server/emails/WelcomeEmail"
 
 import {
   generateFormToken,
@@ -121,9 +121,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const clientIp = getClientIp(req)
+  let operation = "request setup"
 
   try {
     if (rateLimiter) {
+      operation = "Upstash rate-limit check"
       const rateLimitResult = await rateLimiter.limit(clientIp)
       if (!rateLimitResult.success) {
         return res.status(429).json({
@@ -137,6 +139,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       let existingContact = null
 
       try {
+        operation = "Resend contact lookup"
         const contactRes = await resend.contacts.get({
           email,
           audienceId: segmentAudienceId,
@@ -144,7 +147,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         existingContact = contactRes.data
       } catch (err: any) {
         if (err?.statusCode !== 404 && err?.status !== 404) {
-          console.warn("Resend lookup error:", err.message || err)
+          throw err
         }
       }
 
@@ -153,14 +156,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       if (existingContact) {
+        operation = "Resend contact update"
         await resend.contacts.update(buildContactPayload(email))
       } else {
+        operation = "Resend contact create"
         await resend.contacts.create(buildContactPayload(email))
       }
     }
 
     // 2. Manage Topics
     if (topicsID) {
+      operation = "Resend topic update"
       await resend.contacts.topics
         .update({
           email,
@@ -170,10 +176,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // 3. Send Welcome Email
+    operation = "Welcome email rendering"
     const emailHtml = await render(
-      <WelcomeEmail unsubscribeUrl="{{{RESEND_UNSUBSCRIBE_URL}}}" />
+      React.createElement(WelcomeEmail, {
+        unsubscribeUrl: "{{{RESEND_UNSUBSCRIBE_URL}}}",
+      })
     )
 
+    operation = "Resend welcome email send"
     const { error: sendError } = await resend.emails.send({
       from: "Green Impact Innovators <info@greenimpactinnovators.works>",
       to: email,
@@ -191,10 +201,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     return res.status(200).json({ success: true })
   } catch (error: any) {
-    console.error("Newsletter Subscription Exception:", error.message || error)
+    const cause = error?.cause
+    console.error("Newsletter Subscription Exception:", {
+      operation,
+      name: error?.name,
+      message: error?.message || String(error),
+      causeCode: cause?.code,
+      causeMessage: cause?.message,
+    })
     return res.status(500).json({
       error: "Subscription failed",
       message: error.message,
+      ...(process.env.NODE_ENV !== "production"
+        ? {
+            debug: {
+              operation,
+              causeCode: cause?.code,
+            },
+          }
+        : {}),
     })
   }
 }

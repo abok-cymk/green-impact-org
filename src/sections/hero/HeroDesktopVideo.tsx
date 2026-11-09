@@ -1,9 +1,21 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Volume2, VolumeX } from "lucide-react"
 import { AppVideo } from "@/components/ui/AppVideo"
 
 export function HeroDesktopVideo() {
 	const [isMuted, setIsMuted] = useState(true)
+	const [isDesktop, setIsDesktop] = useState(false)
+
+	useEffect(() => {
+		const desktopQuery = window.matchMedia("(min-width: 1024px)")
+		const updateDesktopState = () => setIsDesktop(desktopQuery.matches)
+
+		updateDesktopState()
+		desktopQuery.addEventListener("change", updateDesktopState)
+		return () => desktopQuery.removeEventListener("change", updateDesktopState)
+	}, [])
+
+	if (!isDesktop) return null
 
 	return (
 		<div className="relative hidden h-125 w-full lg:block">

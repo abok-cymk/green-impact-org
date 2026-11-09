@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { IMAGE_KIT_ID } from "@/infrastructure/imagekit"
 import { cn } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -32,6 +32,11 @@ export function AppVideo({
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isPlaying, setIsPlaying] = useState<boolean>(autoPlay)
   const [status, setStatus] = useState<"loading" | "loaded" | "error" >("loading")
+
+  useEffect(() => {
+    const video = videoRef.current
+    return () => video?.pause()
+  }, [])
 
   // Generates the ImageKit structure for video files
   const getVideoSrc = (source: string) => {
