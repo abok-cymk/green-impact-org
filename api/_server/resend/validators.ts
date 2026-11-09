@@ -1,7 +1,8 @@
 import isEmail from "isemail"
-import disposableDomains from "disposable-email-domains" with { type: "json" }
 
 import { hasValidMailServer as checkMailServer } from "../lib/helpers.js"
+
+const disposableDomains: string[] = require("disposable-email-domains")
 
 /**
  * Validate structural email syntax using `isemail`.
