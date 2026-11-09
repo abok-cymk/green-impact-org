@@ -8,9 +8,9 @@ export const siteConfig = {
 };
 
 export const heroContent = {
-  headline: "Growing Greener Futures through Classroom Gardens.",
+  headline: "Nurturing Minds, Restoring Nature, Feeding Futures.",
   subheadline:
-    "Cultivating green mindsets and thriving forest gardens from the ground up.",
+    "We empower learners and communities to tackle climate change through a school based forest garden approach.",
   cta: "Support Our Mission",
 }
 

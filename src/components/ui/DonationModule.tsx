@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { Check, Copy, Heart, Mail, PhoneCall, Wallet, X } from "lucide-react"
+import { Check, Copy, Heart, Mail, Wallet, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 type Bank = "kcb" | "im"
@@ -177,6 +177,16 @@ export function DonationModule() {
             >
               <CopyField label="Business Number (Paybill)" value={paymentDetails[bank].businessNumber} />
               <CopyField label="Account Number" value={paymentDetails[bank].accountNumber} />
+              {bank === "im" && (
+                <section className="mt-2 border border-sky-200 bg-sky-50 p-4" aria-labelledby="international-transfer-title">
+                  <h4 id="international-transfer-title" className="text-sm font-bold text-sky-950">
+                    International Donation (USD)
+                  </h4>
+                  <p className="mt-2 text-xs leading-relaxed text-sky-950/85">
+                    Use your bank&apos;s international transfer or SWIFT wire service, not M-Pesa. Enter the I&amp;M account number shown above as the destination account.
+                  </p>
+                </section>
+              )}
             </div>
           ))}
 

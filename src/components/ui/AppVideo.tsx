@@ -14,7 +14,7 @@ interface AppVideoProps extends React.VideoHTMLAttributes<HTMLVideoElement> {
 }
 
 const IMAGEKIT_URL_BASE = `https://ik.imagekit.io/${IMAGE_KIT_ID}`
-// Replace this with your actual fallback video path if needed
+
 const DEFAULT_FALLBACK = "https://w3schools.com" 
 
 export function AppVideo({
