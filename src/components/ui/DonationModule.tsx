@@ -97,9 +97,9 @@ export function DonationModule() {
           <SheetContent className="h-dvh max-w-md overflow-y-auto border-0 bg-white p-0 text-slate-900">
             <div className="flex min-h-full flex-col px-6 py-7 sm:px-8">
               <SheetHeader className="mb-6 border-b border-slate-200 p-0 pb-5 pr-8">
-                <SheetTitle className="flex items-center gap-2 text-xl font-bold text-slate-900">
+                <SheetTitle className="flex items-center gap-2 text-base font-bold text-slate-900">
                   <Wallet className="h-5 w-5 text-emerald-700" aria-hidden="true" />
-                  M-Pesa Paybill Donation
+                  M-pesa Paybill and USD donation
                 </SheetTitle>
                 <SheetDescription className="mt-2 text-sm leading-relaxed text-slate-600">
                   Use the details for your selected bank in the Lipa na M-Pesa menu.

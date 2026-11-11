@@ -16,7 +16,7 @@ export function HeroContent() {
       </motion.div> */}
 
       {/* H1 is critical for LCP - rendered immediately without motion delay */}
-      <h1 className="text-4xl leading-[1.1] font-bold tracking-tight text-slate-900 md:text-6xl font-display">
+      <h1 className="text-2xl leading-[1.1] font-bold tracking-tight text-slate-900 md:text-5xl font-display">
         {heroContent.headline}
       </h1>
 

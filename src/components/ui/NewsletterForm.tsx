@@ -42,9 +42,9 @@ export default function NewsletterForm() {
     <div className="w-full max-w-xl space-y-2">
       <div className="space-y-1">
         <h2 className="text-2xl font-semibold text-emerald-700 tracking-tight">Stay connected</h2>
-        <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+        {/* <p className="text-gray-600 text-sm md:text-base leading-relaxed">
           Get the latest updates on our climate projects, eco-schools, and community farming initiatives.
-        </p>
+        </p> */}
       </div>
 
       <form onSubmit={handleFormSubmit} className="flex flex-col gap-2 w-full max-w-lg">
