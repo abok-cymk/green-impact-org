@@ -90,7 +90,7 @@ export function DonationModule() {
               className="flex h-auto w-full items-center justify-center gap-2 rounded-full bg-emerald-800 px-6 py-4 text-base font-semibold text-white shadow-md transition-colors hover:bg-emerald-900 sm:w-auto"
             >
               <Heart className="h-5 w-5 fill-current" aria-hidden="true" />
-              Donate via M-Pesa Paybill
+              Donate
             </Button>
           </SheetTrigger>
 

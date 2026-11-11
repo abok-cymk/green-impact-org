@@ -63,6 +63,6 @@ export const awards: Award[] = [
     title: "African Climate Forum – Climate Stories Challenge 2026",
     description:
       "Green Impact Innovators was recognised as Second Runner-Up in the 2026 Climate Stories Challenge by the African Climate Forum, in the Community Adaptation and Resilience category. This recognition celebrates our community-led efforts to promote climate education, sustainable agriculture, and practical climate resilience in underserved communities.",
-    images: ["images/africa-climate-forum-cert.jpeg"],
+    images: ["images/africa-climate-forum-cert.jpeg", "images/africacli-rank.jpeg"],
   },
 ]
