@@ -2,8 +2,10 @@ import { motion } from 'framer-motion';
 import { Section } from '@/components/layout/Section';
 import { AppImage } from '@/components/ui/AppImage';
 import { Quote } from 'lucide-react';
+import { LinkedInPulseIcon } from "@/components/ui/LinkedInPulseIcon";
 
 export function Founder() {
+  const linkedinUrl = "https://www.linkedin.com/in/ambrose-okwach-odima-1929602b9";
   return (
     <Section id="founder">
       <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -16,13 +18,23 @@ export function Founder() {
           transition={{ duration: 0.7 }}
           className="relative"
         >
-          <div className="aspect-4/5 rounded-2xl overflow-hidden shadow-xl bg-slate-100">
+          {/* Added `group` here so hovering the image reveals the icon */}
+          <div className="group aspect-4/5 relative rounded-2xl overflow-hidden shadow-xl bg-slate-100">
             <AppImage 
               src="images/ambrose.jpeg" 
               alt="Ambrose Okwach Odima, Founder of Green Impact Innovators" 
               className="w-full h-full object-cover"
               transformation="w-600,h-750,c-fill"
             />
+
+            {/* Desktop Only: Bottom-right corner of the image */}
+            <div className="hidden md:block absolute bottom-4 right-4 z-10">
+              <LinkedInPulseIcon
+                href={linkedinUrl}
+                label="Connect with Ambrose Okwach Odima on LinkedIn"
+                variant="overlay"
+              />
+            </div>
           </div>
           {/* Decorative accent */}
           <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-brand-gold/20 rounded-full blur-2xl -z-10" />
@@ -59,7 +71,16 @@ export function Founder() {
               <Quote className="h-5 w-5" />
             </div>
             <div>
-              <p className="font-bold text-slate-900">Ambrose Okwach Odima</p>
+              <p className="font-bold text-slate-900">
+                Ambrose Okwach Odima
+                {/* Mobile Only: Inline part of the name text */}
+                <LinkedInPulseIcon
+                  href={linkedinUrl}
+                  label="Connect with Ambrose Okwach Odima on LinkedIn"
+                  variant="inline"
+                  className="md:hidden ml-1.5"
+                />
+              </p>
               <p className="text-sm text-slate-500">Founder & Lead Educator</p>
             </div>
           </div>
