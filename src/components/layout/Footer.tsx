@@ -48,6 +48,16 @@ export function Footer() {
               >
                 <img src="/facebook.svg" alt="Facebook" className="w-6 h-6 object-contain" />
               </a>
+               <a 
+                href="https://x.com/GreenImpacteKsm" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="transition-transform hover:scale-105" 
+                aria-label="Twitter - Green Impact Innovators" 
+                title="@GreenImpacteKsm"
+              >
+                <img src="/x.svg" alt="Facebook" className="w-6 h-6 object-contain" />
+              </a>
                 <a 
                 href="https://www.tiktok.com/@greenimpactinnovators?_r=1&_t=ZS-98sLjoAON9N" 
                 target="_blank" 
