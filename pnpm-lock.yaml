@@ -17,6 +17,12 @@ importers:
       '@react-email/ui':
         specifier: ^6.9.2
         version: 6.9.2(@babel/core@7.29.7)(@types/node@24.13.3)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@tabler/core':
+        specifier: ^1.7.4
+        version: 1.7.4
+      '@tabler/icons-react':
+        specifier: ^3.51.0
+        version: 3.51.0(react@19.2.8)
       '@tailwindcss/vite':
         specifier: ^4
         version: 4.3.3(vite@8.2.1(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12))
@@ -1210,6 +1216,9 @@ packages:
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
+  '@popperjs/core@2.11.8':
+    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
+
   '@radix-ui/number@1.1.3':
     resolution: {integrity: sha512-Road2bidD0uu/1BGDOWNdPI06g0lIRy6IF9GZcIrDK2KGItfor8IQwQa+yM2ERgHM1MmHxaxpTzk0/Jp42lNfA==}
 
@@ -2031,6 +2040,23 @@ packages:
 
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
+
+  '@tabler/core@1.7.4':
+    resolution: {integrity: sha512-fHAPnsKl9JnJJkLxE5UbPkLUBlgn/G1b0urLh5LMGt2DnebpK2tZNEKD/8YiwGz67EoNahGretSsHovDOvJGWA==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      vanilla-calendar-pro: ^3.3.2
+    peerDependenciesMeta:
+      vanilla-calendar-pro:
+        optional: true
+
+  '@tabler/icons-react@3.51.0':
+    resolution: {integrity: sha512-F3GGChIUspsCq+HhXtJezc1W9QRcRlEG07Jb4dKUR1TV+mq1uvY7+G46n1fZE02jhQUOVuOoi445Bk1O9mFrDg==}
+    peerDependencies:
+      react: '>= 16'
+
+  '@tabler/icons@3.51.0':
+    resolution: {integrity: sha512-0pinvPZz7YeX+OSfxuEAbnEPWbocVXW5iU8h5lh41pYG8sZuQfpWECC980lxOT0clGIcNGn8xsBr+zKaRGdA/g==}
 
   '@tailwindcss/node@4.3.3':
     resolution: {integrity: sha512-/T8IKEsf9VTU6tLjgC7+sv2mOPtQxzE2jMw7u4Tt40Tx+QSZxpzh95/H6cMKoja9XuW7iMdLJYBB0o9G1CaAgg==}
@@ -5692,6 +5718,8 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
+  '@popperjs/core@2.11.8': {}
+
   '@radix-ui/number@1.1.3': {}
 
   '@radix-ui/primitive@1.1.7': {}
@@ -6533,6 +6561,17 @@ snapshots:
   '@swc/helpers@0.5.15':
     dependencies:
       tslib: 2.8.1
+
+  '@tabler/core@1.7.4':
+    dependencies:
+      '@popperjs/core': 2.11.8
+
+  '@tabler/icons-react@3.51.0(react@19.2.8)':
+    dependencies:
+      '@tabler/icons': 3.51.0
+      react: 19.2.8
+
+  '@tabler/icons@3.51.0': {}
 
   '@tailwindcss/node@4.3.3':
     dependencies:
