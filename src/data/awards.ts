@@ -27,7 +27,7 @@ export const awards: Award[] = [
       "images/cavu-01.webp",
       "images/award-cavu-tfk.webp",
       "images/cavu-leaders-museum.webp",
-      "images/cavu-certs-holdings.webp"
+      "images/cavu-certs-holdings.webp",
     ],
   },
   {
@@ -42,7 +42,7 @@ export const awards: Award[] = [
       "images/gda.webp",
       "images/gda-school-initiative-01.webp",
       "images/gda-school-initiative-03.webp",
-      "images/gda-school-initiative-02.webp"
+      "images/gda-school-initiative-02.webp",
     ],
   },
   {
@@ -54,5 +54,15 @@ export const awards: Award[] = [
     description:
       "In recognition of your exceptional project, 'Green Impact Innovators' - Climate and Environmental Action, we proudly award you this certificate following your presentation at the Annual Eagles' Den, held on 27th March 2026 at Kisumu Hotel.",
     images: ["images/tfk-02.webp", "images/tfk-01.webp"],
+  },
+  {
+    id: "afrCliForum",
+    orgName: "Africa Climate Forum",
+    logoLink: "https://africaclimateforum.com/",
+    logoSrc: "images/afrclimatelogo.png",
+    title: "African Climate Forum – Climate Stories Challenge 2026",
+    description:
+      "Green Impact Innovators was recognised as Second Runner-Up in the 2026 Climate Stories Challenge by the African Climate Forum, in the Community Adaptation and Resilience category. This recognition celebrates our community-led efforts to promote climate education, sustainable agriculture, and practical climate resilience in underserved communities.",
+    images: ["images/africa-climate-forum-cert.jpeg"],
   },
 ]
