@@ -1,6 +1,14 @@
-import { useEffect, useRef, useState } from "react"
-import { Check, Copy, Heart, Mail, Wallet, X } from "lucide-react"
+import { useState } from "react"
+import { Check, Copy, Heart, Mail, Wallet } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 
 type Bank = "kcb" | "im"
 
@@ -60,17 +68,7 @@ function CopyField({ label, value }: { label: string; value: string }) {
 }
 
 export function DonationModule() {
-  const [isOpen, setIsOpen] = useState(false)
   const [activeBank, setActiveBank] = useState<Bank>("kcb")
-  const dialogRef = useRef<HTMLDialogElement>(null)
-
-  useEffect(() => {
-    const dialog = dialogRef.current
-    if (!dialog) return
-
-    if (isOpen && !dialog.open) dialog.showModal()
-    if (!isOpen && dialog.open) dialog.close()
-  }, [isOpen])
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -85,24 +83,89 @@ export function DonationModule() {
           Every contribution helps us expand climate education, establish more forest gardens, and equip young people to lead sustainable change in their communities.
         </p>
 
-        <div className="mb-8" aria-label="Funding progress: 15 percent">
-          <div className="mb-2 flex justify-between text-sm font-medium text-slate-700">
-            <span>Funding Progress</span>
-            <span>15% / 100%</span>
-          </div>
-          <div className="h-2.5 w-full bg-slate-200">
-            <div className="h-full bg-emerald-700 transition-all duration-1000" style={{ width: "15%" }} />
-          </div>
-        </div>
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              type="button"
+              className="flex h-auto w-full items-center justify-center gap-2 rounded-full bg-emerald-800 px-6 py-4 text-base font-semibold text-white shadow-md transition-colors hover:bg-emerald-900 sm:w-auto"
+            >
+              <Heart className="h-5 w-5 fill-current" aria-hidden="true" />
+              Donate via M-Pesa Paybill
+            </Button>
+          </SheetTrigger>
 
-        <Button
-          type="button"
-          onClick={() => setIsOpen(true)}
-          className="flex h-auto w-full items-center justify-center gap-2 rounded-full bg-emerald-800 px-6 py-4 text-base font-semibold text-white shadow-md transition-colors hover:bg-emerald-900 sm:w-auto"
-        >
-          <Heart className="h-5 w-5 fill-current" aria-hidden="true" />
-          Donate via M-Pesa Paybill
-        </Button>
+          <SheetContent className="h-dvh max-w-md overflow-y-auto border-0 bg-white p-0 text-slate-900">
+            <div className="flex min-h-full flex-col px-6 py-7 sm:px-8">
+              <SheetHeader className="mb-6 border-b border-slate-200 p-0 pb-5 pr-8">
+                <SheetTitle className="flex items-center gap-2 text-xl font-bold text-slate-900">
+                  <Wallet className="h-5 w-5 text-emerald-700" aria-hidden="true" />
+                  M-Pesa Paybill Donation
+                </SheetTitle>
+                <SheetDescription className="mt-2 text-sm leading-relaxed text-slate-600">
+                  Use the details for your selected bank in the Lipa na M-Pesa menu.
+                </SheetDescription>
+              </SheetHeader>
+
+              <div role="tablist" aria-label="Choose bank" className="grid grid-cols-2 gap-1 bg-slate-100 p-1">
+                {(Object.keys(paymentDetails) as Bank[]).map((bank) => (
+                  <button
+                    key={bank}
+                    id={`bank-tab-${bank}`}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeBank === bank}
+                    aria-controls={`bank-panel-${bank}`}
+                    onClick={() => setActiveBank(bank)}
+                    className={`min-h-10 px-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 ${
+                      activeBank === bank
+                        ? "bg-white text-emerald-900 shadow-sm"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    {paymentDetails[bank].label}
+                  </button>
+                ))}
+              </div>
+
+              {(Object.keys(paymentDetails) as Bank[]).map((bank) => (
+                <div
+                  key={bank}
+                  id={`bank-panel-${bank}`}
+                  role="tabpanel"
+                  aria-labelledby={`bank-tab-${bank}`}
+                  hidden={activeBank !== bank}
+                  className="mt-5 flex flex-col gap-3"
+                >
+                  <CopyField label="Business Number (Paybill)" value={paymentDetails[bank].businessNumber} />
+                  <CopyField label="Account Number" value={paymentDetails[bank].accountNumber} />
+                  {bank === "im" && (
+                    <section className="mt-2 border border-sky-200 bg-sky-50 p-4" aria-labelledby="international-transfer-title">
+                      <h4 id="international-transfer-title" className="text-sm font-bold text-sky-950">
+                        International Donation (USD)
+                      </h4>
+                      <p className="mt-2 text-xs leading-relaxed text-sky-950/85">
+                        Use your bank&apos;s international transfer or SWIFT wire service, not M-Pesa. Enter the I&amp;M account number shown above as the destination account.
+                      </p>
+                    </section>
+                  )}
+                </div>
+              ))}
+
+              <div className="mt-6 border border-emerald-100 bg-emerald-50/70 p-4">
+                <h4 className="mb-2 text-xs font-bold tracking-wider text-emerald-900 uppercase">
+                  Quick Instructions
+                </h4>
+                <ol className="list-decimal space-y-2 pl-4 text-xs leading-relaxed text-emerald-950/85">
+                  <li>Open M-Pesa and choose <strong>Lipa na M-Pesa</strong>.</li>
+                  <li>Select <strong>Pay Bill</strong>.</li>
+                  <li>Enter the business number shown above.</li>
+                  <li>Enter the account number shown above.</li>
+                  <li>Enter your contribution amount and confirm with your PIN.</li>
+                </ol>
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
 
       <div className="mt-8 border-t border-slate-200 pt-6">
@@ -115,95 +178,6 @@ export function DonationModule() {
         </a>
       </div>
 
-      <dialog
-        ref={dialogRef}
-        aria-labelledby="donation-sheet-title"
-        aria-describedby="donation-sheet-description"
-        onClose={() => setIsOpen(false)}
-        className="fixed inset-y-0 right-0 m-0 h-dvh w-full max-w-md overflow-y-auto border-0 bg-white p-0 text-slate-900 shadow-2xl backdrop:bg-black/50"
-      >
-        <div className="flex min-h-full flex-col px-6 py-7 sm:px-8">
-          <div className="mb-6 flex items-start justify-between gap-4 border-b border-slate-200 pb-5">
-            <div>
-              <h3 id="donation-sheet-title" className="flex items-center gap-2 text-xl font-bold">
-                <Wallet className="h-5 w-5 text-emerald-700" aria-hidden="true" />
-                M-Pesa Paybill Donation
-              </h3>
-              <p id="donation-sheet-description" className="mt-2 text-sm leading-relaxed text-slate-600">
-                Use the details for your selected bank in the Lipa na M-Pesa menu.
-              </p>
-            </div>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsOpen(false)}
-              aria-label="Close donation details"
-              className="shrink-0"
-            >
-              <X aria-hidden="true" />
-            </Button>
-          </div>
-
-          <div role="tablist" aria-label="Choose bank" className="grid grid-cols-2 gap-1 bg-slate-100 p-1">
-            {(Object.keys(paymentDetails) as Bank[]).map((bank) => (
-              <button
-                key={bank}
-                id={`bank-tab-${bank}`}
-                type="button"
-                role="tab"
-                aria-selected={activeBank === bank}
-                aria-controls={`bank-panel-${bank}`}
-                onClick={() => setActiveBank(bank)}
-                className={`min-h-10 px-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 ${
-                  activeBank === bank
-                    ? "bg-white text-emerald-900 shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                {paymentDetails[bank].label}
-              </button>
-            ))}
-          </div>
-
-          {(Object.keys(paymentDetails) as Bank[]).map((bank) => (
-            <div
-              key={bank}
-              id={`bank-panel-${bank}`}
-              role="tabpanel"
-              aria-labelledby={`bank-tab-${bank}`}
-              hidden={activeBank !== bank}
-              className="mt-5 flex flex-col gap-3"
-            >
-              <CopyField label="Business Number (Paybill)" value={paymentDetails[bank].businessNumber} />
-              <CopyField label="Account Number" value={paymentDetails[bank].accountNumber} />
-              {bank === "im" && (
-                <section className="mt-2 border border-sky-200 bg-sky-50 p-4" aria-labelledby="international-transfer-title">
-                  <h4 id="international-transfer-title" className="text-sm font-bold text-sky-950">
-                    International Donation (USD)
-                  </h4>
-                  <p className="mt-2 text-xs leading-relaxed text-sky-950/85">
-                    Use your bank&apos;s international transfer or SWIFT wire service, not M-Pesa. Enter the I&amp;M account number shown above as the destination account.
-                  </p>
-                </section>
-              )}
-            </div>
-          ))}
-
-          <div className="mt-6 border border-emerald-100 bg-emerald-50/70 p-4">
-            <h4 className="mb-2 text-xs font-bold tracking-wider text-emerald-900 uppercase">
-              Quick Instructions
-            </h4>
-            <ol className="list-decimal space-y-2 pl-4 text-xs leading-relaxed text-emerald-950/85">
-              <li>Open M-Pesa and choose <strong>Lipa na M-Pesa</strong>.</li>
-              <li>Select <strong>Pay Bill</strong>.</li>
-              <li>Enter the business number shown above.</li>
-              <li>Enter the account number shown above.</li>
-              <li>Enter your contribution amount and confirm with your PIN.</li>
-            </ol>
-          </div>
-        </div>
-      </dialog>
     </div>
   )
 }
