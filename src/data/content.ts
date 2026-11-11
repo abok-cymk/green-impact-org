@@ -8,9 +8,9 @@ export const siteConfig = {
 };
 
 export const heroContent = {
-  headline: "Nurturing Minds, Restoring Nature, Feeding Futures.",
+  headline: "Inspiring Students, Uniting Communities, Cultivating Climate Action.",
   subheadline:
-    "We empower learners and communities to tackle climate change through a school based forest garden approach.",
+    "We empower learners and communities to tackle climate change through climate education and action.",
   cta: "Support Our Mission",
 }
 

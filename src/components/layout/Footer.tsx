@@ -8,16 +8,16 @@ export function Footer() {
         
         {/* Left Side: Branding and Subscription */}
         <div className="w-full md:max-w-md flex flex-col gap-4">
-          <div className="flex justify-start">
+          {/* <div className="flex justify-start">
             <AppImage 
               src="images/logo.png" 
               alt="Green Impact Innovators" 
               className="w-40 h-auto rounded-none bg-none mix-blend-multiply" 
             />
-          </div>
-          <p className="text-slate-600 text-sm leading-relaxed">
-            Empowering school communities in Kisumu to tackle climate change.
-          </p>
+          </div> */}
+          {/* <p className="text-slate-600 text-sm leading-relaxed">
+            Empowering learners and communities to tackle climate change through climate education and action.
+          </p> */}
           
           {/* Form container - Ensure NewsletterForm styling uses green button accents */}
           <div className="mt-2 w-full">
