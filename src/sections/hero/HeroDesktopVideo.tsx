@@ -22,7 +22,7 @@ export function HeroDesktopVideo() {
 			<div className="hero-video-wobble absolute inset-0 bg-green-200 shadow-2xl">
 				<div className="hero-video-inner absolute inset-2 overflow-hidden">
 					<AppVideo
-						src="video/green_impact_innovators.mp4"
+						src="video/green_impact_bsky.mp4"
 						autoPlay
 						muted={isMuted}
 						loop

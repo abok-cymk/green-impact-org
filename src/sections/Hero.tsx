@@ -2,6 +2,7 @@ import { motion } from "framer-motion"
 import { HeroContent } from "./hero/HeroContent"
 import { HeroMobileCarousel } from "./hero/HeroMobileCarousel"
 import { HeroDesktopVideo } from "./hero/HeroDesktopVideo"
+import { Section } from "@/components/layout/Section"
 
 const heroImages = [
   { src: "images/tree-nursery-01.webp", alt: "Students planting trees" },
@@ -11,7 +12,7 @@ const heroImages = [
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden pt-24 pb-12">
+    <Section className="relative flex min-h-screen items-center overflow-hidden pt-24 pb-12">
       <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
         <HeroContent />
         <motion.div
@@ -25,6 +26,6 @@ export function Hero() {
           <HeroDesktopVideo />
         </motion.div>
       </div>
-    </section>
+    </Section>
   )
 }
