@@ -1,11 +1,10 @@
 import { motion } from "framer-motion"
-import { Section } from "@/components/layout/Section"
 import ContactForm from "@/components/ui/ContactForm"
 import { DonationModule } from "@/components/ui/DonationModule"
 
 export function CTA() {
   return (
-    <Section id="support" className="text-slate-800">
+    <section id="support" className="text-slate-800 mx-auto max-w-6xl">
       <div className="grid items-center gap-12 md:grid-cols-2">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -26,6 +25,6 @@ export function CTA() {
           <ContactForm />
         </motion.div>
       </div>
-    </Section>
+    </section>
   )
 }

@@ -1,13 +1,13 @@
-import { AppImage } from "@/components/ui/AppImage";
+// import { AppImage } from "@/components/ui/AppImage";
 import NewsletterForm from "@/components/ui/NewsletterForm";
+import { SocialMediaPlatform } from "@/components/ui/SocialMediaPlatform";
+import { socialPlatforms } from "@/data/social";
 
 export function Footer() {
   return (
-    <footer className="text-slate-800 py-12 px-6 border-t border-slate-100">
-      <div className="mx-auto max-w-6xl flex flex-col md:flex-row justify-between items-start gap-8">
-        
-        {/* Left Side: Branding and Subscription */}
-        <div className="w-full md:max-w-md flex flex-col gap-4">
+    <footer className="border-t border-slate-100 px-6 py-12 text-slate-800">
+      <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 md:flex-row">
+        <div className="w-full md:max-w-md">
           {/* <div className="flex justify-start">
             <AppImage 
               src="images/logo.png" 
@@ -25,78 +25,33 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Right Side: Contact, Socials and Copyright */}
-        <div className="w-full md:w-auto flex flex-col items-start md:items-end gap-5 md:text-right self-stretch justify-between">
-          <div className="flex flex-col items-start md:items-end gap-3">
-            <a 
-              href="mailto:info@greenimpactinnovators.works" 
-              className="text-sm font-medium text-slate-700 hover:text-emerald-600 transition-colors" 
+        <div className="flex w-full self-stretch flex-col items-start justify-between gap-5 md:w-auto md:items-end md:text-right">
+          <div className="flex flex-col items-start gap-3 md:items-end">
+            <a
+              href="mailto:info@greenimpactinnovators.works"
+              className="text-sm font-medium text-slate-700 transition-colors hover:text-emerald-600"
               aria-label="Email Green Impact Innovators"
             >
               info@greenimpactinnovators.works
             </a>
-            
-            {/* Social Icons */}
-            <div className="flex items-center gap-4 flex-wrap">
-              <a 
-                href="https://www.facebook.com/profile.php?id=61591609450557" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="transition-transform hover:scale-105" 
-                aria-label="Facebook - Green Impact Innovators" 
-                title="@Green Impact Innovators"
-              >
-                <img src="/facebook.svg" alt="Facebook" className="w-6 h-6 object-contain" />
-              </a>
-               <a 
-                href="https://x.com/GreenImpacteKsm" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="transition-transform hover:scale-105" 
-                aria-label="Twitter - Green Impact Innovators" 
-                title="@GreenImpacteKsm"
-              >
-                <img src="/x.svg" alt="Facebook" className="w-6 h-6 object-contain" />
-              </a>
-                <a 
-                href="https://www.tiktok.com/@greenimpactinnovators?_r=1&_t=ZS-98sLjoAON9N" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="transition-transform hover:scale-105" 
-                aria-label="TikTok - Green Impact Innovators" 
-                title="@greenimpactinnovators"
-              >
-                <img src="/tiktok.svg" alt="TikTok" className="w-6 h-6 object-contain" />
-              </a>
-              <a 
-                href="https://www.linkedin.com/groups/18521004" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="transition-transform hover:scale-105" 
-                aria-label="LinkedIn - Green Impact Innovators" 
-                title="@Green Impact Innovators"
-              >
-                <img src="/linkedin.webp" alt="LinkedIn" className="w-6 h-6 object-contain" />
-              </a>
-              <a 
-                href="https://wa.me/254792931210" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="transition-transform hover:scale-105" 
-                aria-label="WhatsApp 0792931210" 
-                title="WhatsApp 0792931210"
-              >
-                <img src="/whatsapp.svg" alt="WhatsApp" className="w-6 h-6 object-contain" />
-              </a>
-            </div>
+
+            <nav
+              className="flex flex-wrap items-center gap-4"
+              aria-label="Green Impact Innovators social media"
+            >
+              {socialPlatforms.map((platform) => (
+                <SocialMediaPlatform
+                  key={platform.name}
+                  platform={platform}
+                />
+              ))}
+            </nav>
           </div>
 
-          {/* Copyright Section */}
-          <div className="text-slate-500 text-xs mt-auto pt-4 md:pt-0 border-t border-slate-200 w-full md:border-none md:w-auto">
+          <p className="mt-auto w-full border-t border-slate-200 pt-4 text-xs text-slate-500 md:w-auto md:border-none md:pt-0">
             &copy; {new Date().getFullYear()} Green Impact Innovators. All rights reserved.
-          </div>
+          </p>
         </div>
-
       </div>
     </footer>
   );

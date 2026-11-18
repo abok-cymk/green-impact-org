@@ -1,4 +1,10 @@
 import { cn } from "@/lib/utils";
+import { SocialMediaPlatform } from "@/components/ui/SocialMediaPlatform"
+import { socialPlatforms } from "@/data/social"
+
+const heroPlatforms = socialPlatforms.filter(
+  (platform) => platform.name !== "LinkedIn" && platform.name !== "WhatsApp"
+);
 
 interface SectionProps {
   children: React.ReactNode;
@@ -17,7 +23,16 @@ export function Section({ children, className, id, dark = false }: SectionProps)
         className
       )}
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-6xl relative">
+      <div className="hidden lg:flex flex-col gap-3.5 absolute left-8 xl:-left-30 top-1/2 -translate-y-1/2 z-20">
+        {heroPlatforms.map((platform) => (
+          <SocialMediaPlatform
+            key={platform.name}
+            platform={platform}
+            iconClassName="h-8 w-8"
+          />
+        ))}
+      </div>
         {children}
       </div>
     </section>

@@ -145,6 +145,16 @@ export function DonationModule() {
                       </h4>
                       <p className="mt-2 text-xs leading-relaxed text-sky-950/85">
                         Use your bank&apos;s international transfer or SWIFT wire service, not M-Pesa. Enter the I&amp;M account number shown above as the destination account.
+                        <pre className="font-sans text-sm block whitespace-pre-line">
+                          <p>Account Details
+                          Bank:I&M BANK</p>
+                          <p>Branch:KENYATTA BRANCH</p>
+                          <p>Swift Code: IMBLKENA</p>
+                          <p>Bank code:57</p>
+                          <p>Branch code:000</p>
+                          <p>Account Name: GREEN IMPACT INNOVATORS CBO</p>
+                          <p>Account Number: 00110779611250</p>
+                        </pre>
                       </p>
                     </section>
                   )}
