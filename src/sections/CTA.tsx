@@ -4,7 +4,7 @@ import { DonationModule } from "@/components/ui/DonationModule"
 
 export function CTA() {
   return (
-    <section id="support" className="text-slate-800 mx-auto max-w-6xl">
+    <section id="support" className="text-slate-800 mx-auto max-w-6xl py-16 md:py-24 px-6 md:px-12">
       <div className="grid items-center gap-12 md:grid-cols-2">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
